@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <script src="StorageUnit.js" defer></script>
+        <link rel="stylesheet" href="StorageUnit.css"/>
+    </head>
+    <body class="body">
+        <div class="text-body">
+            
+                <h1 class="main-header">Storage Units at Eagle Rock Metro West</h1>
+                <div id="sub-info">
+                    <h4 class="sub-header">Search by Unit:</h4>
+                        <p>Use the "Search by Unit" section to find out which resident rents a specific unit. Simply enter the unit number, and the application will provide you with the corresponding resident's name.</p>
+                    <h4 class="sub-header">Search by Name:</h4>
+                        <p>Utilize the "Search by Name" section to discover which unit a specific resident rents. Enter the tenant's name, and the application will display the corresponding unit they occupy.</p>
+                    <h4 class="sub-header">Available Storage Units:</h4>
+                        <p>In the "Available Storage Units" section, you can check which storage units are currently available for rent. This section provides you with an up-to-date list of available units. </p>
+                </div>
+            <div class="input">
+                <div>Search by Name</div>
+                <input  id="name" type="text">
+                <button id="search-unit-button">Search</button>
+                <div id="unit-info"></div>
+                <div id="parking-info"> </div>
+                <div id="apt-info"> </div>
+            </div>
+            <div class="input">
+                <div>Search by Unit</div>
+                <input  id="unit" type="text">
+                <button id="search-name-button">Search</button>
+                <div id="name-info"></div>
+                <div id="parking-infoA"> </div>
+                <div id="apt-infoA"> </div>
+            </div>
+            <h1 class="main-header">Find Apartment</h1>
+            <div class="input">
+                <div>Enter Parking Code</div>
+                <input  id="apt" type="text">
+                <button id="search-apt-button">Search</button>
+                <div id="parking-code"></div>
+            </div>
+            <h1 class="main-header">Add New Parking information</h1>
+            <div class="input">
+                <div id="update-info">
+                    <div>
+                        <div>First name: -------------- <input  id="firstName" type="text"></div>
+                        <div id="firstName-error"></div>
+                    </div>
+                    <div>
+                        <div>Last Name: -------------- <input  id="lastName" type="text"></div>
+                        <div id="lastName-error"></div>
+                    </div>
+                    <div>
+                        <div>Apartment: -------------- <input  id="apt-input" type="text"></div>
+                        <div id="apt-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Year: ----------------- <input  id="year" type="text"></div>
+                        <div id="year-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Make: ---------------- <input  id="make" type="text"></div>
+                        <div id="make-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Model: --------------- <input  id="model" type="text"></div>
+                        <div id="model-error"></div>
+                    </div>
+                    <div>
+                        <div>License Plate Number: - <input  id="lp#" type="text"></div>
+                        <div id="lp#-error"></div>
+                    </div>
+                    <div>
+                        <div>License Plate State: ----- <input  id="lpState" type="text"></div>
+                        <div id="lpState-error"></div>
+                    </div>
+                    <div><button id="update-button">Add Information</button></div>
+                    <div id="error"></div>
+            </div>
+            <div id="confirm-update"></div>
+        </div>
+
+        <h1 class="main-header">Update Existing Information</h1>
+            <div class="input">
+                <div id="resident-search">
+                    <div>Resident to Update: <input id="resident-search-name" type="text"><button id="update-resident-button">Search</button></div>
+                </div>
+            </div>
+            <div class="input">
+                <div id="update-info">
+                    <div>
+                        <div>First name: -------------- <input  id="firstName" type="text"></div>
+                        <div id="firstName-error"></div>
+                    </div>
+                    <div>
+                        <div>Last Name: -------------- <input  id="lastName" type="text"></div>
+                        <div id="lastName-error"></div>
+                    </div>
+                    <div>
+                        <div>Apartment: -------------- <input  id="apt-input" type="text"></div>
+                        <div id="apt-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Year: ----------------- <input  id="year" type="text"></div>
+                        <div id="year-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Make: ---------------- <input  id="make" type="text"></div>
+                        <div id="make-error"></div>
+                    </div>
+                    <div>
+                        <div>Car Model: --------------- <input  id="model" type="text"></div>
+                        <div id="model-error"></div>
+                    </div>
+                    <div>
+                        <div>License Plate Number: - <input  id="lp#" type="text"></div>
+                        <div id="lp#-error"></div>
+                    </div>
+                    <div>
+                        <div>License Plate State: ----- <input  id="lpState" type="text"></div>
+                        <div id="lpState-error"></div>
+                    </div>
+                    <div><button id="update-button">Update Information</button></div>
+                    <div id="error"></div>
+            </div>
+            <div id="confirm-update"></div>
+        </div>
+        
+        <div>  
+            <h1 class="main-header"> Avaliable Units </h1>
+            <div class="box-info"></div>
+        </div>
+    
+    </body>
+</html>
