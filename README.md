@@ -1,4 +1,4 @@
-# eagleRockParking
+# Eagle Rock Parking Summer Project
 This repo stores the code and timeline for my Eagle Rock parking project, my thoughts as well as the overall summary.
 
 
