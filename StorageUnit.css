@@ -1,0 +1,59 @@
+.input {
+    background-color: white;
+    margin: 16px;
+    padding: 16px;
+    border: 2px solid rgb(151,129,60);
+    color: rgb(26,43,66);
+    border-radius: 10px;
+}
+
+.header {
+    padding: 16px;
+    
+}
+
+.body {
+    padding: 16px
+}
+
+.text-body {
+    background-color: rgb(26,43,66);
+    font-family: pt sans, sans-serif, Cambria;
+    color: white;
+    margin: 16px;
+    padding: 16px
+}
+
+.sub-header {
+    color: rgb(151,129,60)
+}
+
+.main-header {
+   
+    padding: 16px;
+}
+
+.box-info {
+    background-color: white;
+    margin: 16px;
+    padding: 16px;
+    border: 2px solid rgb(151,129,60);
+    color: rgb(26,43,66);
+    border-radius: 10px;
+    height: 400px;
+}
+
+#sub-info {
+    margin: 16px;
+    align-items: flex-end;
+}
+
+.error {
+    color: red;
+}
+
+.confirm-update {
+    margin: 16px;
+    height: 300px;
+    width: 300 px;
+}
