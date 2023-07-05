@@ -1,13 +1,13 @@
-import { initializeApp } from 'firebase/app';
+//import { initializeApp } from 'firebase/app';
 
 // TODO: Replace the following with your app's Firebase project configuration
 
 
-const app = initializeApp(firebaseConfig);
+//const app = initializeApp(firebaseConfig);
 
-import { getDatabase, ref, set } from "firebase/database";
+//import { getDatabase, ref, set } from "firebase/database";
 
-const database = getDatabase();
+//const database = getDatabase();
 
 
 // function writeUserData(userId, name, email, imageUrl) {
@@ -101,8 +101,8 @@ function searchName() {
         return;
     }
 
-    let nameUpdateA = Number(unit.value.toLowerCase().replaceAll(/\s/g, ""));
-    
+    let nameUpdateA = Number(unit.value.replaceAll(/[\s-]/g, ""));
+    console.log(nameUpdateA)
     if ((nameUpdateA > nameDict.length || nameUpdateA === 0)) {
         nameInfo.innerHTML = `Please input a valid garage number`
         parkingInfoA.innerHTML = "";
