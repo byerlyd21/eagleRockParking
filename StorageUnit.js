@@ -53,7 +53,7 @@ codeDict = {
     "T" : "0", "H" : "1", "E" : "2", "C" : "3", "O" : "4", "M" : "5", "P" : "6", "A" : "7", "N" : "8", "Y" : "9"
 }
 
-//Search unit by first and last name variables
+//Search garageNum by first and last name variables
 const fullName = document.getElementById("name");
 const searchUnitButton = document.getElementById("search-unit-button");
 const unitInfo = document.getElementById("unit-info");
@@ -70,21 +70,21 @@ function searchUnit() {
         return;
     }
 
-    let nameUpdate = fullName.value.toLowerCase().replaceAll(/\s/g, "");
+    let fullNameRaw = fullName.value.toLowerCase().replaceAll(/\s/g, "");
     
-    if (!(nameUpdate in unitDict)) {
+    if (!(fullNameRaw in unitDict)) {
         unitInfo.innerHTML = `Please input a valid first and last name`
         parkingInfo.innerHTML = "";
         aptInfo.innerHTML = "";
     } else {
-    unitInfo.innerHTML = `Unit: ${unitDict[nameUpdate]["garage"]}`;
-    parkingInfo.innerHTML = `Parking: ${unitDict[nameUpdate]["parking"]}`;
-    aptInfo.innerHTML = `Apartment: ${unitDict[nameUpdate]["apartment"]}`;
+    unitInfo.innerHTML = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
+    parkingInfo.innerHTML = `Parking: ${unitDict[fullNameRaw]["parking"]}`;
+    aptInfo.innerHTML = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
     }
 }
 
-//Search frist and last name by unit variables
-const unit = document.getElementById("unit");
+//Search frist and last name by garageNum variables
+const garageNum = document.getElementById("unit");
 const searchNameButton = document.getElementById("search-name-button");
 const nameInfo = document.getElementById("name-info");
 const parkingInfoA = document.getElementById("parking-infoA");
@@ -94,25 +94,28 @@ searchNameButton.addEventListener("click", searchName);
 
 function searchName() {
     
-    if (unit.value === "") {
+    if (garageNum.value === "") {
         nameInfo.innerHTML = `Please input a garage number`
         parkingInfoA.innerHTML = "";
         aptInfoA.innerHTML = "";
         return;
     }
 
-    let nameUpdateA = Number(unit.value.replaceAll(/[\s-]/g, ""));
-    console.log(nameUpdateA)
-    if ((nameUpdateA > nameDict.length || nameUpdateA === 0)) {
+    // Remove any spaces or "-" in text box
+    let garageNumRaw = Number(garageNum.value.replaceAll(/[\s-]/g, ""));
+    console.log(garageNumRaw)
+    
+    //Check to make sure garage number is a number and between 1 and 8
+    if ((garageNumRaw > nameDict.length || garageNumRaw === 0 || isNaN(garageNumRaw))) {
         nameInfo.innerHTML = `Please input a valid garage number`
         parkingInfoA.innerHTML = "";
         aptInfoA.innerHTML = "";
-    } else if (nameDict[nameUpdateA - 1]["firstName"] != undefined) {
-        nameInfo.innerHTML = `Name: ${nameDict[nameUpdateA - 1]["firstName"]} ${nameDict[nameUpdateA - 1]["lastName"]}`;
-        parkingInfoA.innerHTML = `Parking: ${nameDict[nameUpdateA - 1]["parking"]}`;
-        aptInfoA.innerHTML = `Apartment: ${nameDict[nameUpdateA - 1]["apartment"]}`;
+    } else if (nameDict[garageNumRaw - 1]["firstName"] != undefined) {
+        nameInfo.innerHTML = `Name: ${nameDict[garageNumRaw - 1]["firstName"]} ${nameDict[garageNumRaw - 1]["lastName"]}`;
+        parkingInfoA.innerHTML = `Parking: ${nameDict[garageNumRaw - 1]["parking"]}`;
+        aptInfoA.innerHTML = `Apartment: ${nameDict[garageNumRaw - 1]["apartment"]}`;
     } else {
-        nameInfo.innerHTML = nameDict[nameUpdateA - 1];
+        nameInfo.innerHTML = nameDict[garageNumRaw - 1];
         parkingInfoA.innerHTML = "";
         aptInfoA.innerHTML = "";
     }
