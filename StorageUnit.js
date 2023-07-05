@@ -183,12 +183,12 @@ const garageNumber = document.getElementById("garage-num");
 const garageNumberError = document.getElementById("garage-num-error");
 addInfoButton.addEventListener("click", addInfo);
 
-const fields = [firstName, lastName, apartment, year, make, model, lp, lpState, garageNumber, parkingType, parkingSpaceNum];
-const errors = [firstNameError, lastNameError, aptError, yearError, makeError, modelError, lpError, lpStateError, garageNumberError, parkingTypeError, parkingSpaceNumError];
+const fields = [firstName, lastName, apartment, year, make, model, lp, lpState, parkingType, garageNumber, parkingSpaceNum];
+const errors = [firstNameError, lastNameError, aptError, yearError, makeError, modelError, lpError, lpStateError, parkingTypeError, garageNumberError, parkingSpaceNumError];
 
 function addInfo() {
     
-    for (i = 0; i < 11; i ++) {
+    for (i = 0; i < 8; i ++) {
         if (fields[i].value === "") {
             errors[i].innerHTML = "This field is missing a value"
             return;
@@ -196,6 +196,26 @@ function addInfo() {
             errors[i].innerHTML = "";
         }
     }
+    
+    //updated to show message if user does not input anything in these fields
+    if (garageNumber.value === "") {
+        garageNumber.value = "Not Applicable"
+    }
+    
+    if (parkingType.value === "") {
+        parkingType.value = "Not Applicable"
+    }
+    
+    if (parkingSpaceNum.value === "" && parkingType.value.toLowerCase() === "premier") {
+        parkingSpaceNumError.innerHTML = "Premier parking needs a space number"
+    } else if (parkingSpaceNum.value === "") {
+        parkingSpaceNum.value = "Not Applicable"
+    } else if (parkingSpaceNum.value === "" && parkingType.value.toLowerCase() === "covered") {
+        parkingSpaceNumError.value = "Covered parking needs a space number"
+    } else {
+        parkingSpaceNumError.innerHTML = ""
+    }
+    
     confirmAddInfo()
 
 }
