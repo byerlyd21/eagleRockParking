@@ -32,8 +32,9 @@ unitDict = {
         "model" : "Accord",
         "lp" : "78H92",
         "lpState" : "MA",
-        "parking" : "regular",
-        "garage" : "8"}
+        "parkingType" : "regular",
+        "garage" : "8",
+        "parkingSpace" : "regular"}
 };
 
 nameDict = [
@@ -78,7 +79,7 @@ function searchUnit() {
         aptInfo.innerHTML = "";
     } else {
     unitInfo.innerHTML = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
-    parkingInfo.innerHTML = `Parking: ${unitDict[fullNameRaw]["parking"]}`;
+    parkingInfo.innerHTML = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
     aptInfo.innerHTML = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
     }
 }
@@ -174,17 +175,21 @@ const lpError = document.getElementById("lp#-error");
 const lpState = document.getElementById("lpState");
 const lpStateError = document.getElementById("lpState-error");
 const addInfoButton = document.getElementById("update-button");
-
+const parkingType = document.getElementById("parking-type");
+const parkingTypeError = document.getElementById("parking-type-error");
+const parkingSpaceNum = document.getElementById("parking-space");
+const parkingSpaceNumError = document.getElementById("parking-space-error");
+const garageNumber = document.getElementById("garage-num");
+const garageNumberError = document.getElementById("garage-num-error");
 addInfoButton.addEventListener("click", addInfo);
 
-const fields = [firstName, lastName, apartment, year, make, model, lp, lpState];
-const errors = [firstNameError, lastNameError, aptError, yearError, makeError, modelError, lpError, lpStateError];
+const fields = [firstName, lastName, apartment, year, make, model, lp, lpState, garageNumber, parkingType, parkingSpaceNum];
+const errors = [firstNameError, lastNameError, aptError, yearError, makeError, modelError, lpError, lpStateError, garageNumberError, parkingTypeError, parkingSpaceNumError];
 
 function addInfo() {
     
-    for (i = 0; i < 8; i ++) {
+    for (i = 0; i < 11; i ++) {
         if (fields[i].value === "") {
-            console.log("bad")
             errors[i].innerHTML = "This field is missing a value"
             return;
         } else {
@@ -212,9 +217,8 @@ function confirmAddInfo() {
     License Plate: ${lp.value}\r\n
     License Plate State: ${lpState.value}`;
     
-    //let firstLast = (firstName.value + lastName.value).toLowerCase()
-    //console.log(firstLast)
-    unitDict[firstName.value] = {
+    let firstLast = (firstName.value + lastName.value).toLowerCase()
+    unitDict[firstLast] = {
         "firstName" : firstName.value,
         "lastName" : lastName.value, 
         "apartment" : apartment.value, 
@@ -222,6 +226,9 @@ function confirmAddInfo() {
         "make" : make.value,
         "model" : model.value,
         "lp" : lp.value,
-        "lpState" : lpState.value};
+        "lpState" : lpState.value,
+        "garage" : garageNumber.value, 
+        "parkingType" : parkingType.value,
+        "parkingSpace" : parkingSpaceNum.value};
     console.log(unitDict)
 }
