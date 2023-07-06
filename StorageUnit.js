@@ -1,9 +1,23 @@
-//import { initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
 // TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
+    
+        apiKey: process.env.API_KEY,
+        authDomain: "eagle-rock-parking.firebaseapp.com",
+        // The value of `databaseURL` depends on the location of the database
+        databaseURL: "https://DATABASE_NAME.firebaseio.com",
+        projectId: "eagle-rock-parking",
+        storageBucket: "eagle-rock-parking.appspot.com",
+        messagingSenderId: process.env.SENDER_ID,
+        appId: process.env.APP_ID,
+        // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
+        measurementId: process.env.G-MEASUREMENT_ID
+    
+};
 
+const app = initializeApp(firebaseConfig);
 
-//const app = initializeApp(firebaseConfig);
 
 //import { getDatabase, ref, set } from "firebase/database";
 
