@@ -13,7 +13,6 @@ const firebaseConfig = {
         appId: process.env.APP_ID,
         // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
         measurementId: process.env.G-MEASUREMENT_ID
-    
 };
 
 const app = initializeApp(firebaseConfig);

@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Login and Registration</title>
+    <link rel="stylesheet" href="login.css">
+    
+</head>
+<body>
+    <div class="hero">
+        <div class="form-box">
+            <div class="button-box">
+                <div id="btn"></div>
+                <button type="button" class="toggle-btn" onclick="login()">Log in</button>
+                <button type="button" class="toggle-btn" onclick="register()">Register</button>
+            </div>
+            <form id="log-in" class="input-group">
+                <input type="text" class="input-field" id="user-id" placeholder="User Id" required>
+                <input type="text" class="input-field" id="password" placeholder="Enter Password" required>
+                <input type="checkbox" class="check-box"><span>Remember Password</span>
+                <button type="sumbit" id="login-btn" class="submit-btn">Log in</button>
+            </form>
+            <form id="register" class="input-group">
+                <input type="email" class="input-field" placeholder="Email Id" required>
+                <input type="text" class="input-field" placeholder="User Id" required>
+                <input type="text" class="input-field" placeholder="Enter Password" required>
+                <input type="checkbox" class="check-box"><span>I agree to the terms and conditions</span>
+                <button type="sumbit" id="regester-btn" class="submit-btn">Log in</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        let x = document.getElementById("log-in");
+        let y = document.getElementById("register");
+        let z = document.getElementById("btn");
+
+        function register() {
+            x.style.left = "-400px";
+            y.style.left = "50px";
+            z.style.left = "110px";
+        }
+
+        function login() {
+            x.style.left = "50px";
+            y.style.left = "450px";
+            z.style.left = "0px";
+        }
+
+    </script>
+    <script src="login..js"></script>
+</body>
+</html>
