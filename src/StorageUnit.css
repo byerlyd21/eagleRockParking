@@ -13,13 +13,14 @@
 }
 
 .body {
-    padding: 16px
+    padding: 16px;
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(../login-test/img/er-bkgrnd-img.jpeg);
 }
 
 .text-body {
-    background-color: rgb(26,43,66);
-    font-family: pt sans, sans-serif, Cambria;
-    color: white;
+    background-color: white;
+    font-family: sans-serif, Cambria;
+    color: rgb(26,43,66);
     margin: 16px;
     padding: 16px
 }
@@ -29,7 +30,7 @@
 }
 
 .main-header {
-   
+    font-weight: normal;
     padding: 16px;
 }
 
@@ -57,3 +58,49 @@
     height: 300px;
     width: 300 px;
 }
+
+.accordian {
+    max-width: 800px;
+}
+
+.accordian .contentBx {
+    position: relative;
+    margin: 10px 20px;
+}
+
+.accordian .contentBx .label {
+    position: relative;
+    padding: 10px;
+    background: rgb(26,43,66);
+    color: white;
+    cursor: pointer;
+}
+
+.accordian .contentBx .label::before {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 1.5em;
+}
+
+.accordian .contentBx.active .label::before {
+    content: "-";
+}
+
+.accordian .contentBx .content {
+    position: relative;
+    background: rgb(151,129,60);
+    height: 0;
+    overflow: hidden;
+    transition: 0.5s;
+    overflow-y: auto;
+ }
+ 
+ 
+
+.accordian .contentBx.active .content {
+    height: 150px;
+    padding: 10px;
+ }

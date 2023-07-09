@@ -107,10 +107,24 @@
             <div id="confirm-update"></div>
         </div>
         
-        <div>  
-            <h1 class="main-header"> Avaliable Units </h1>
-            <div class="box-info"></div>
+        <div class="accordian">  
+            <div class="contentBx">
+                <div class="label">Avaliable Units</div>
+                <div class="content">
+                    <p> 
+                        ahdahdoahdoah
+                    </p>
+                </div>
+            </div>
         </div>
-    
+        <script>
+            const accordian = document.getElementsByClassName("contentBx"); 
+
+            for (i = 0; i<accordian.length; i++) {
+                accordian[i].addEventListener("click", function(event){
+                    event.currentTarget.classList.toggle('active')
+                });
+            }
+        </script>
     </body>
 </html>
