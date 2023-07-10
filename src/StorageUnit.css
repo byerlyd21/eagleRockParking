@@ -5,8 +5,12 @@
     border: 2px solid rgb(151,129,60);
     color: rgb(26,43,66);
     border-radius: 10px;
+    box-shadow: 1px 1px 4px black;
 }
 
+.enter {
+    border: none;
+}
 .header {
     padding: 16px;
     
@@ -55,12 +59,12 @@
 
 .confirm-update {
     margin: 16px;
-    height: 300px;
+    height: 150px;
     width: 300 px;
 }
 
 .accordian {
-    max-width: 800px;
+    max-width: 1100px;
 }
 
 .accordian .contentBx {
@@ -91,16 +95,42 @@
 
 .accordian .contentBx .content {
     position: relative;
-    background: rgb(151,129,60);
-    height: 0;
+    background: lightslategray;
+    max-height: 0;
     overflow: hidden;
+    transition: max-height 0.5s;
     transition: 0.5s;
     overflow-y: auto;
  }
- 
- 
 
-.accordian .contentBx.active .content {
-    height: 150px;
+ .accordian .contentBx.active .content {
+    max-height: 500px;
     padding: 10px;
+ }
+
+ .inner-content {
+    color: rgb(26,43,66);
+    flex-wrap: wrap;
+    list-style-type: none;
+ }
+
+ .list-item {
+    border-radius: 15px;
+    background-color: white;
+    padding: 8px;
+    margin: 8px;
+    width: 100px;
+    box-shadow: 2px 2px 5px black;
+    cursor: pointer;
+ }
+
+ .list-item:hover {
+    border-radius: 15px;
+    background-color: lightgray;
+    padding: 8px;
+    margin: 8px;
+    width: 100px;
+    box-shadow: 1px 1px 4px black;
+    cursor: pointer;
+    transition: ease-in;
  }
