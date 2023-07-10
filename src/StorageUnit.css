@@ -9,8 +9,44 @@
 }
 
 .enter {
-    border: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 100%;
+    margin-bottom: 8px;
+    
+    
 }
+
+.btn {
+    border: none;
+    box-shadow: 1px 1px 4px black;
+    border-radius: 15px;
+    cursor: pointer;
+    background: rgb(151,129,60);
+    color: white;
+    padding: 8px;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center;
+}
+
+.enter-short {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 80%;
+    margin-bottom: 8px;
+}
+
+.right-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
 .header {
     padding: 16px;
     
