@@ -266,6 +266,28 @@ function confirmAddInfo() {
     console.log(unitDict)
 }
 
+const dropFile = document.getElementById("drop-file");
 
+dropFile.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropFile.classList.remove("hover")
+});
+
+dropFile.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    const type = file.type;
+    if (type == "csv") {
+        return parse(file);
+    } else {
+        dropFile.setAttribute("class", "dropFile invalid");
+        dropFile.innerText = "Invalid File";
+        return false;
+    }
+});
+
+function parse(file) {
+    dropFile.innerText = "Added" + file.name;
+}
 
 
