@@ -266,6 +266,33 @@ function confirmAddInfo() {
     console.log(unitDict)
 }
 
+// Remove Resident
+const removeBtn = document.getElementById("remove-resident-button")
+removeBtn.addEventListener("click", removeResident());
+
+
+function removeResident() {
+    const residentRemoved = document.getElementById("resident-remove-name");
+    const removedResConf = document.getElementById("removed-resident-confirmation");
+
+    if (residentRemoved.value === "") {
+        removedResConf.innerHTML = "Please input resident you would like to remove"
+        return;
+    }
+    
+    let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
+    
+    if (residentRemovedRaw in unitDict) {
+        removedResConf.innerHTML = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
+        delete unitDict[residentRemovedRaw]
+    } else {
+        removedResConf.innerHTML = "Resident not found"
+    }
+};
+
+
+
+// Update Database with CSV file
 const dropFile = document.getElementById("drop-file");
 
 dropFile.addEventListener("dragover", (e) => {
