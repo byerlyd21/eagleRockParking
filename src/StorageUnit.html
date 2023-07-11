@@ -136,7 +136,7 @@
             </div>
             <div class="accordian">  
                 <div class="contentBx">
-                    <div class="label">Avaliable Units</div>
+                    <div class="label">Avaliable Spaces/Garages</div>
                     <div class="content">
                         <ul class="inner-content">
                             <li class="list-item">Premier 16</li>
@@ -150,9 +150,11 @@
                 <div class="contentBx">
                     <div class="label">Update Database</div>
                     <div class="content">
-                        <div id="drop-file">
-
-                        </div>
+                        <form class="csv-form">
+                            <input type="file" id="drop-file"/>
+                            <input type="submit" value="Submit" />
+                        </form>
+                        <div class="center-button"><button class="btn" id="submit-btn">Submit</button></div>
                     </div>
                 </div>
             </div>
@@ -160,7 +162,7 @@
         <script>
             const label = document.getElementsByClassName("label");
             const labelArray = Array.from(label); // Convert HTMLCollection to an array
-    
+            
             const accordian = document.getElementsByClassName("contentBx");
             const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
 

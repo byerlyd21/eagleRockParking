@@ -30,6 +30,7 @@
     background: rgb(151,129,60);
     color: white;
     padding: 8px;
+    width: 75px
 }
 
 .center-button {
@@ -169,20 +170,30 @@
  }
 
  .list-item:hover {
-    border-radius: 15px;
     background-color: lightgray;
-    padding: 8px;
-    margin: 8px;
-    width: 100px;
-    box-shadow: 1px 1px 4px black;
     cursor: pointer;
     transition: ease-in;
  }
 
  #drop-file {
     height: 300px;
+    width: 300px;
     background-color: white;
     border-color: rgb(151,129,60);
     border-radius: 15px;
     margin: 16px;
+    box-shadow: 2px 2px 5px black;
+    text-align: center;
+
  }
+
+ #drop-file:hover {
+    background-color: lightgray;
+    transition: 0.2s;
+ }
+ 
+ .csv-form {
+    display: flex;
+    justify-content: center;
+ }
+ 

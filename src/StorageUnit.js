@@ -277,17 +277,49 @@ dropFile.addEventListener("drop", (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     const type = file.type;
-    if (type == "csv") {
-        return parse(file);
+    if (type == "text/csv") {
     } else {
         dropFile.setAttribute("class", "dropFile invalid");
         dropFile.innerText = "Invalid File";
+        console.log(type)
         return false;
     }
 });
 
-function parse(file) {
-    dropFile.innerText = "Added" + file.name;
-}
+const csvFileInput = document.querySelector("#drop-file");
+
+const submitBtn = document.getElementById("submit-btn");
+submitBtn.addEventListener("click", parse(csvFileInput));
+
+
+function parse() {
+    console.log("submit")
+    const reader = new FileReader();
+    const file = csvFileInput.files[0];
+    reader.onload = function (e) {
+        console.log("content: ", e.target.result);
+    }
+    reader.readAsText(file);
+};
+
+const form = document.querySelector(".csv-form");
+
+form.addEventListener("submit", function (event) {
+    const reader = new FileReader();
+    const file = csvFileInput.files[0];
+    console.log("submiting")
+    event.preventDefault();
+    reader.onload = function (e) {
+        console.log("content: ", e.target.result);
+    }
+    reader.readAsText(file);
+});
+
+
+
+
+
+
+
 
 
