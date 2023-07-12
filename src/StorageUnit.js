@@ -67,6 +67,10 @@ codeDict = {
     "T" : "0", "H" : "1", "E" : "2", "C" : "3", "O" : "4", "M" : "5", "P" : "6", "A" : "7", "N" : "8", "Y" : "9"
 }
 
+lpDict = {
+    "78H92" : "bobjohnson"
+}
+
 //Search garageNum by first and last name variables
 const fullName = document.getElementById("name");
 const searchUnitButton = document.getElementById("search-unit-button");
@@ -117,7 +121,7 @@ function searchName() {
 
     // Remove any spaces or "-" in text box
     let garageNumRaw = Number(garageNum.value.replaceAll(/[\s-]/g, ""));
-    console.log(garageNumRaw)
+    
     
     //Check to make sure garage number is a number and between 1 and 8
     if ((garageNumRaw > nameDict.length || garageNumRaw === 0 || isNaN(garageNumRaw))) {
@@ -143,7 +147,6 @@ const parkingCode = document.getElementById("parking-code");
 
 searchAptButton.addEventListener("click", findCode);
 
-
 function findCode() {
     
     if (apt.value === "") {
@@ -167,7 +170,50 @@ function findCode() {
         }
             parkingCode.innerHTML = `Apt: ${result}`
     }
+}
 
+// search resident by license plate
+const licensePlate = document.getElementById("licensePlate");
+const searchLpBtn = document.getElementById("search-lp-button");
+const lpName = document.getElementById("name-info-lp");
+const lpApt = document.getElementById("apt-info-lp");
+const lpParkingType = document.getElementById("lp-parking-type");
+const lpSpaceNum = document.getElementById("lp-space-num");
+
+searchLpBtn.addEventListener("click", searchLp);
+
+function searchLp() {
+    console.log("working")
+    if (licensePlate.value === "") {
+        lpName.innerHTML = `Please input the license plate`
+        lpApt.innerHTML = ""
+        lpParkingType.innerHTML = ""
+        lpSpaceNum.innerHTML = ""
+        return;
+    }
+    //remove special charecters and whitespace
+    let lpRaw = licensePlate.value.replaceAll(/[^\w\s\d]/g, "").toUpperCase();
+    console.log(lpRaw)
+
+    if (!(lpRaw in lpDict )) {
+        lpName.innerHTML = `License plate not in database`
+        lpApt.innerHTML = ""
+        lpParkingType.innerHTML = ""
+        lpSpaceNum.innerHTML = ""
+
+    } else if (lpRaw.length < 0 || lpRaw.length > 10) {
+        lpName.innerHTML = `Please input a valid license plate`
+        lpApt.innerHTML = ""
+        lpParkingType.innerHTML = ""
+        lpSpaceNum.innerHTML = ""
+        return; 
+    } else {
+        //finding the name from the lpDict, and getting the rest of the info with the name and unitDict
+        lpName.innerHTML = `Name: ${unitDict[lpDict[lpRaw]]["firstName"]} ${unitDict[lpDict[lpRaw]]["lastName"]}`
+        lpApt.innerHTML = `Apt: ${unitDict[lpDict[lpRaw]]["apartment"]}`
+        lpParkingType.innerHTML = `Parking Type: ${unitDict[lpDict[lpRaw]]["parkingType"]}`
+        lpSpaceNum.innerHTML = `Paring Space: ${unitDict[lpDict[lpRaw]]["parkingSpace"]}`
+    }
 }
 
 //Add New information
@@ -268,8 +314,7 @@ function confirmAddInfo() {
 
 // Remove Resident
 const removeBtn = document.getElementById("remove-resident-button")
-removeBtn.addEventListener("click", removeResident());
-
+removeBtn.addEventListener("click", removeResident);
 
 function removeResident() {
     const residentRemoved = document.getElementById("resident-remove-name");
@@ -285,6 +330,7 @@ function removeResident() {
     if (residentRemovedRaw in unitDict) {
         removedResConf.innerHTML = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
         delete unitDict[residentRemovedRaw]
+        console.log(unitDict)
     } else {
         removedResConf.innerHTML = "Resident not found"
     }
@@ -341,12 +387,4 @@ form.addEventListener("submit", function (event) {
     }
     reader.readAsText(file);
 });
-
-
-
-
-
-
-
-
 

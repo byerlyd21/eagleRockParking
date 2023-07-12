@@ -30,7 +30,7 @@
     background: rgb(151,129,60);
     color: white;
     padding: 8px;
-    width: 75px
+    min-width: 75px
 }
 
 .center-button {
