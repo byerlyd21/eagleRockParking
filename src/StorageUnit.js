@@ -325,6 +325,7 @@ function removeResident() {
         return;
     }
     
+    //change to unitDict key format (lower-case with no spaces)
     let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
     
     if (residentRemovedRaw in unitDict) {
