@@ -52,7 +52,7 @@ unitDict = {
 
 nameDict = [
 
-    "Garage 1 is unassigned",
+    false,
     "Garage 2 is unassigned",
     "Garage 3 is unassigned",
     "Garage 4 is unassigned",
@@ -257,10 +257,8 @@ function addInfo() {
     }
     
     //updated to show message if user does not input anything in these fields
-    if (garageNumber.value === "") {
-        garageNumber.value = "Not Applicable"
-    }
     
+
     if (parkingType.value === "") {
         parkingType.value = "Not Applicable"
     }
@@ -275,15 +273,36 @@ function addInfo() {
         parkingSpaceNumError.innerHTML = ""
     }
     
-    confirmAddInfo()
+    if (garageNumber.value === "") {
+        garageNumber.value = "Not Applicable"
+        confirmAddInfo(0)
+    } else {
+        let newGarageRaw = Number(garageNumber.value.replaceAll(/[\s-]/g, ""));
+        console.log(newGarageRaw, garageNumber.value)
+        confirmAddInfo(newGarageRaw)
+    }
+    
 
+}
+
+function addGarage(newGarageRaw, firstLast) {
+    console.log("working")
+    if (newGarageRaw < 1) {
+        return;
+    } else if (newGarageRaw > 8) {
+        errors[9].innerHTML = "MetroWest only has garages 1-8"
+    } else if (nameDict[newGarageRaw -1] === false) {
+        nameDict[newGarageRaw -1] = unitDict[firstLast]
+    } else {
+        errors[9].innerHTML = "This garage is already taken"
+    }
 }
 
 // Confirm update
 const confirmUpdate = document.querySelector(".confirm-update");
 
 
-function confirmAddInfo() {
+function confirmAddInfo(newGarageRaw) {
 
     confirmUpdate.value = 
     `Does this information look right?\r\n
@@ -310,6 +329,8 @@ function confirmAddInfo() {
         "parkingType" : parkingType.value,
         "parkingSpace" : parkingSpaceNum.value};
     console.log(unitDict)
+
+    addGarage(newGarageRaw, firstLast);
 }
 
 // Remove Resident
