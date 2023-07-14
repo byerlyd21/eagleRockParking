@@ -286,7 +286,7 @@ function addInfo() {
 }
 
 function addGarage(newGarageRaw, firstLast) {
-    console.log("working")
+
     if (newGarageRaw < 1) {
         return;
     } else if (newGarageRaw > 8) {
@@ -295,6 +295,7 @@ function addGarage(newGarageRaw, firstLast) {
         nameDict[newGarageRaw -1] = unitDict[firstLast]
     } else {
         errors[9].innerHTML = "This garage is already taken"
+        return;
     }
 }
 
@@ -316,6 +317,9 @@ function confirmAddInfo(newGarageRaw) {
     License Plate State: ${lpState.value}`;
     
     let firstLast = (firstName.value + lastName.value).toLowerCase()
+
+    addGarage(newGarageRaw, firstLast);
+    
     unitDict[firstLast] = {
         "firstName" : firstName.value,
         "lastName" : lastName.value, 
@@ -329,8 +333,6 @@ function confirmAddInfo(newGarageRaw) {
         "parkingType" : parkingType.value,
         "parkingSpace" : parkingSpaceNum.value};
     console.log(unitDict)
-
-    addGarage(newGarageRaw, firstLast);
 }
 
 // Remove Resident
@@ -352,7 +354,7 @@ function removeResident() {
     if (residentRemovedRaw in unitDict) {
         removedResConf.innerHTML = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
         delete unitDict[residentRemovedRaw]
-        console.log(unitDict)
+
     } else {
         removedResConf.innerHTML = "Resident not found"
     }
@@ -376,7 +378,6 @@ dropFile.addEventListener("drop", (e) => {
     } else {
         dropFile.setAttribute("class", "dropFile invalid");
         dropFile.innerText = "Invalid File";
-        console.log(type)
         return false;
     }
 });
