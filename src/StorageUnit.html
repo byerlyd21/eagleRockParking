@@ -184,6 +184,15 @@
                     </div>
                 </div>
             </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Guest Parking</div>
+                    <div class="content">
+                        <ul class="inner-content" id="guest-ul">
+                        </ul>
+                    </div>
+                </div>
+            </div>
         
         <script>
             const label = document.getElementsByClassName("label");
@@ -196,6 +205,16 @@
                 labelArray[i].addEventListener("click", function(event) {
                     accordianArray[i].classList.toggle('active');
             });
+            }
+            
+            let numGuest = 25
+            const guestUl = document.getElementById("guest-ul");
+            for (i = 0; i < numGuest; i ++) {
+                const guestSpace = document.createElement("li");
+                guestSpace.innerHTML = "Working"
+                guestSpace.className = "list-item"
+                guestUl.appendChild(guestSpace);
+
             }
             
         </script>
