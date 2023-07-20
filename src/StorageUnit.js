@@ -419,22 +419,50 @@ dropFile.addEventListener("drop", (e) => {
 
 const numGuest = 25;
 const guestUl = document.getElementById("guest-ul");
+guestParkingList = []
 
 for (i = 0; i < numGuest; i++) {
     const guestSpace = document.createElement("li");
     guestSpace.innerHTML = `Guest Space ${i + 1}`;
     guestSpace.className = "list-item";
     guestUl.appendChild(guestSpace);
-}
+    guestParkingList.push(false);
+    //use IIFE to apply event listener to reserve guest space button
+    (function (spaceNum) {
+        guestSpace.addEventListener("click", function() {
+          reserveGuest(spaceNum);
+        });
+      })(i + 1);
+    }
+    
+    function reserveGuest(spaceNum) {
+        console.log(`working ${spaceNum}`);
+        const popupContainer = document.getElementById("popupContainer");
+        const popupContent = document.getElementById("popupContent");
+        popupContent.textContent = `Enter the Guest Car information for Guest space ${spaceNum} below`;
+        popupContainer.style.display = "block";
+    }
 
-guestParkingList = []
-for (i = 0; i < numGuest; i++) {
-    guestParkingList.push(false)
-}
-console.log(guestParkingList.length)
-console.log("hi")
+    const closePopupButton = document.getElementById("closePopup");
+    closePopupButton.addEventListener("click", function() {
+        const popupContainer = document.getElementById("popupContainer");
+        popupContainer.style.display = "none";
+    });
 
+    window.addEventListener("click", function(event) {
+        const popupContainer = document.getElementById("popupContainer");
+        if (event.target === popupContainer) {
+            popupContainer.style.display = "none";
+        }
+    });
 
+    const reserveGuestbtn = document.getElementById("reserve-button")
+    reserveGuestbtn.addEventListener("click", reserve())
+
+    function reserve() {
+        const guest = document.getElementById("guest-name");
+        //guestSpace.innerHTML = guest;
+    }
 
 //accordian boxes
 

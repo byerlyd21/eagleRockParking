@@ -187,12 +187,18 @@
                 <div class="contentBx">
                     <div class="label">Guest Parking</div>
                     <div class="content">
-                        <ul class="inner-content" id="guest-ul">
-                        </ul>
+                        <ul class="inner-content" id="guest-ul"></ul>
+                        <div id="popupContainer" class="popup">
+                            <div class="popup-content">
+                              <span class="close-button" id="closePopup">&times;</span>
+                              <p id="popupContent"></p>
+                              <input class="enter" id="guest-name" type="text" placeholder="Guest Name">
+                              <div class="center-button"><button class="btn" id="reserve-button">Reserve</button></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        
         <script src="StorageUnit.js" defer></script>
     </body>
 </html>
