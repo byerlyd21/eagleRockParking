@@ -22,3 +22,9 @@ other software. If someting is being done already, why do it again? I had wanted
 use the softwares online version. They have paid for the desktop version that does not have API access. Instead I plan to have an option,
 where users can upload a csv file of information from the renting software that contains all of the parking information needed. The user
 will still need to update the garage info manually, but this won't be a very big issue because there are only 10 garages as opposed to over 500 parking spaces. This will make the program easy to use long after I leave. 
+
+
+# Guest Parking
+The guest parking section allows the user to reserve a guest space for over-night stay. In this section there wil be 25 cells representing
+the number of guest parking spaces at the property. These are created with a variable, so If this program is used by a diferent property, 
+they will just need to update this so it is catered to their location. The cells will be labeled by either "Avaliable" or an apartment number. If the cell contains an apartment, this means that a resident from that apartment has reserved the guest space. If the cell is clicked, details will appear in a pop-up showing what car is parked there, as well as the guests name, residents name, and the guests contact information. If the space is avaliabe, a form will appear for the resident to fill out. When the form is submitted, the cell will change from avaliable to ocupied.
