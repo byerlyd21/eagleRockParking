@@ -285,6 +285,7 @@ function addInfo() {
 
 }
 
+
 function addGarage(newGarageRaw, firstLast) {
 
     if (newGarageRaw < 1) {
@@ -382,63 +383,69 @@ dropFile.addEventListener("drop", (e) => {
     }
 });
 
-const csvFileInput = document.querySelector("#drop-file");
+// const csvFileInput = document.querySelector("#drop-file");
 
-const submitBtn = document.getElementById("submit-btn");
-submitBtn.addEventListener("click", parse(csvFileInput));
+// const submitBtn = document.getElementById("submit-btn");
+// submitBtn.addEventListener("click", parse(csvFileInput));
 
 
-function parse() {
-    console.log("submit")
-    const reader = new FileReader();
-    const file = csvFileInput.files[0];
-    reader.onload = function (e) {
-        console.log("content: ", e.target.result);
-    }
-    reader.readAsText(file);
-};
+// function parse() {
+//     console.log("submit")
+//     const reader = new FileReader();
+//     const file = csvFileInput.files[0];
+//     reader.onload = function (e) {
+//         console.log("content: ", e.target.result);
+//     }
+//     reader.readAsText(file);
+// };
 
-const form = document.querySelector(".csv-form");
+// const form = document.querySelector(".csv-form");
 
-form.addEventListener("submit", function (event) {
-    const reader = new FileReader();
-    const file = csvFileInput.files[0];
-    console.log("submiting")
-    event.preventDefault();
-    reader.onload = function (e) {
-        console.log("content: ", e.target.result);
-    }
-    reader.readAsText(file);
-});
+// form.addEventListener("submit", function (event) {
+//     const reader = new FileReader();
+//     const file = csvFileInput.files[0];
+//     console.log("submiting")
+//     event.preventDefault();
+//     reader.onload = function (e) {
+//         console.log("content: ", e.target.result);
+//     }
+//     reader.readAsText(file);
+// });
+
 
 
 //guest parking
 
-guestParkingList = []
-function createGuestParkingCells() {
-    let numGuest = 25;
-    const guestUl = document.getElementById("guest-ul");
-  
-    for (i = 0; i < numGuest; i++) {
-      const guestSpace = document.createElement("li");
-      guestSpace.innerHTML = `Guest Space ${i + 1}`;
-      guestSpace.className = "list-item";
-      guestUl.appendChild(guestSpace);
-    }
+
+const numGuest = 25;
+const guestUl = document.getElementById("guest-ul");
+
+for (i = 0; i < numGuest; i++) {
+    const guestSpace = document.createElement("li");
+    guestSpace.innerHTML = `Guest Space ${i + 1}`;
+    guestSpace.className = "list-item";
+    guestUl.appendChild(guestSpace);
 }
+
+guestParkingList = []
+for (i = 0; i < numGuest; i++) {
+    guestParkingList.push(false)
+}
+console.log(guestParkingList.length)
+console.log("hi")
+
 
 
 //accordian boxes
-function accordianBoxes() {
-    const label = document.getElementsByClassName("label");
-    const labelArray = Array.from(label); // Convert HTMLCollection to an array
 
-    const accordian = document.getElementsByClassName("contentBx");
-    const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
+const label = document.getElementsByClassName("label");
+const labelArray = Array.from(label); // Convert HTMLCollection to an array
 
-    for (let i = 0; i < accordianArray.length; i++) {
-        labelArray[i].addEventListener("click", function(event) {
-            accordianArray[i].classList.toggle('active');
-    });
-    }
+const accordian = document.getElementsByClassName("contentBx");
+const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
+
+for (let i = 0; i < accordianArray.length; i++) {
+    labelArray[i].addEventListener("click", function(event) {
+        accordianArray[i].classList.toggle('active');
+});
 }
