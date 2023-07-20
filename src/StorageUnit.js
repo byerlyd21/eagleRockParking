@@ -414,5 +414,31 @@ form.addEventListener("submit", function (event) {
 
 //guest parking
 
-    
+guestParkingList = []
+function createGuestParkingCells() {
+    let numGuest = 25;
+    const guestUl = document.getElementById("guest-ul");
+  
+    for (i = 0; i < numGuest; i++) {
+      const guestSpace = document.createElement("li");
+      guestSpace.innerHTML = `Guest Space ${i + 1}`;
+      guestSpace.className = "list-item";
+      guestUl.appendChild(guestSpace);
+    }
+}
 
+
+//accordian boxes
+function accordianBoxes() {
+    const label = document.getElementsByClassName("label");
+    const labelArray = Array.from(label); // Convert HTMLCollection to an array
+
+    const accordian = document.getElementsByClassName("contentBx");
+    const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
+
+    for (let i = 0; i < accordianArray.length; i++) {
+        labelArray[i].addEventListener("click", function(event) {
+            accordianArray[i].classList.toggle('active');
+    });
+    }
+}

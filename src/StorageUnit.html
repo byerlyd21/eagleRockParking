@@ -1,6 +1,5 @@
 <html>
     <head>
-        <script src="StorageUnit.js" defer></script>
         <link rel="stylesheet" href="StorageUnit.css"/>
     </head>
     <body class="body">
@@ -195,28 +194,29 @@
             </div>
         
         <script>
-            const label = document.getElementsByClassName("label");
-            const labelArray = Array.from(label); // Convert HTMLCollection to an array
+            //accordian boxes
+            // const label = document.getElementsByClassName("label");
+            // const labelArray = Array.from(label); // Convert HTMLCollection to an array
             
-            const accordian = document.getElementsByClassName("contentBx");
-            const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
+            // const accordian = document.getElementsByClassName("contentBx");
+            // const accordianArray = Array.from(accordian); // Convert HTMLCollection to an array
 
-            for (let i = 0; i < accordianArray.length; i++) {
-                labelArray[i].addEventListener("click", function(event) {
-                    accordianArray[i].classList.toggle('active');
-            });
-            }
-            
-            let numGuest = 25
-            const guestUl = document.getElementById("guest-ul");
-            for (i = 0; i < numGuest; i ++) {
-                const guestSpace = document.createElement("li");
-                guestSpace.innerHTML = "Working"
-                guestSpace.className = "list-item"
-                guestUl.appendChild(guestSpace);
-
-            }
-            
+            // for (let i = 0; i < accordianArray.length; i++) {
+            //     labelArray[i].addEventListener("click", function(event) {
+            //         accordianArray[i].classList.toggle('active');
+            // });
+            // }
         </script>
+        <script>
+            //accordian boxes
+            document.addEventListener("DOMContentLoaded", function () {
+            accordianBoxes();
+            });
+            //guest parking
+            document.addEventListener("DOMContentLoaded", function () {
+            createGuestParkingCells();
+            });
+        </script>
+        <script src="StorageUnit.js" defer></script>
     </body>
 </html>
