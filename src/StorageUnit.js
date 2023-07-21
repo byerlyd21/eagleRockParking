@@ -422,45 +422,109 @@ const guestUl = document.getElementById("guest-ul");
 guestParkingList = []
 
 for (i = 0; i < numGuest; i++) {
+
     const guestSpace = document.createElement("li");
     guestSpace.innerHTML = `Guest Space ${i + 1}`;
     guestSpace.className = "list-item";
     guestUl.appendChild(guestSpace);
-    guestParkingList.push(false);
+    guestParkingList.push([guestSpace, false]);
     //use IIFE to apply event listener to reserve guest space button
     (function (spaceNum) {
         guestSpace.addEventListener("click", function() {
-          reserveGuest(spaceNum);
+        verifyStatus(spaceNum);
         });
-      })(i + 1);
-    }
+    })(i + 1);
     
+    function verifyStatus(spaceNum) {
+
+        if (guestParkingList[spaceNum][1] === false) {
+            console.log('false')
+            reserveGuest(spaceNum)
+        } else if (guestParkingList[spaceNum][1] === true) {
+            console.log('true')
+            viewGuest(spaceNum);
+        }}  
+    // if (guestParkingList[i][1] = false) {
+    //     console.log('false')
+    //     (function (spaceNum) {
+    //         guestSpace.addEventListener("click", function() {
+    //         reserveGuest(spaceNum);
+    //         });
+    //     })(i + 1);
+    // } else if (guestParkingList[i][1] === true) {
+    //     console.log('true')
+    //     (function (spaceNum) {
+    //         guestSpace.addEventListener("click", function() {
+    //         viewGuest(spaceNum);
+    //         });
+    //     })(i + 1);
+    // } else {
+    //     console.log("not t of f")
+    //     console.log(guestParkingList[i][1])
+    // }
+    };
+    
+    function viewGuest(spaceNum) {
+        const popupContainer = document.getElementById("popupContainer");
+        const popupContent = document.getElementById("popupContent");
+        popupContent.textContent = `Guest card`;
+        popupContainer.style.display = "block";
+    
+        const closePopupButton = document.getElementById("closePopup");
+        closePopupButton.addEventListener("click", function() {
+            const popupContainer = document.getElementById("popupContainer");
+            popupContainer.style.display = "none";
+        });
+
+        window.addEventListener("click", function(event) {
+            const popupContainer = document.getElementById("popupContainer");
+            if (event.target === popupContainer) {
+                popupContainer.style.display = "none";
+            }
+        });
+        const removeGuestbtn = document.getElementById("reserve-button")
+        removeGuestbtn.innerHTML = "Remove Guest"
+        removeGuestbtn.addEventListener("click",  ()=> {
+            remove(spaceNum, popupContainer)
+        })};
+
+    function remove(spaceNum, popupContainer) {
+        guestParkingList[spaceNum - 1][0].innerHTML = `Guest Space ${spaceNum}`
+        guestParkingList[spaceNum][1] = false
+        popupContainer.style.display = "none";
+    }
+
     function reserveGuest(spaceNum) {
         console.log(`working ${spaceNum}`);
         const popupContainer = document.getElementById("popupContainer");
         const popupContent = document.getElementById("popupContent");
         popupContent.textContent = `Enter the Guest Car information for Guest space ${spaceNum} below`;
         popupContainer.style.display = "block";
-    }
-
-    const closePopupButton = document.getElementById("closePopup");
-    closePopupButton.addEventListener("click", function() {
-        const popupContainer = document.getElementById("popupContainer");
-        popupContainer.style.display = "none";
-    });
-
-    window.addEventListener("click", function(event) {
-        const popupContainer = document.getElementById("popupContainer");
-        if (event.target === popupContainer) {
+    
+        const closePopupButton = document.getElementById("closePopup");
+        closePopupButton.addEventListener("click", function() {
+            const popupContainer = document.getElementById("popupContainer");
             popupContainer.style.display = "none";
-        }
-    });
+        });
 
-    const reserveGuestbtn = document.getElementById("reserve-button")
-    reserveGuestbtn.addEventListener("click", reserve())
+        window.addEventListener("click", function(event) {
+            const popupContainer = document.getElementById("popupContainer");
+            if (event.target === popupContainer) {
+                popupContainer.style.display = "none";
+            }
+        });
+        const reserveGuestbtn = document.getElementById("reserve-button")
+        reserveGuestbtn.innerHTML = "Reserve"
+        reserveGuestbtn.addEventListener("click", ()=> {
+            reserve(spaceNum, popupContainer)
+        })};
 
-    function reserve() {
-        const guest = document.getElementById("guest-name");
+    function reserve(spaceNum, popupContainer) {
+        guestParkingList[spaceNum - 1][0].innerHTML = "Reserved"
+        guestParkingList[spaceNum][1] = true
+        const guest = document.getElementById("first-name-g");
+        popupContainer.style.display = "none";
+
         //guestSpace.innerHTML = guest;
     }
 
