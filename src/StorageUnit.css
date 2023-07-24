@@ -2,7 +2,6 @@
     background-color: white;
     margin: 16px;
     padding: 16px;
-    border: 2px solid rgb(151,129,60);
     color: rgb(26,43,66);
     border-radius: 10px;
     box-shadow: 1px 1px 4px black;
@@ -85,7 +84,6 @@
     background-color: white;
     margin: 16px;
     padding: 16px;
-    border: 2px solid rgb(151,129,60);
     color: rgb(26,43,66);
     border-radius: 10px;
     height: 400px;
@@ -152,20 +150,21 @@
  }
 
  .inner-content {
-    color: rgb(26,43,66);
+    color: white;
     flex-wrap: wrap;
     list-style-type: none;
  }
 
  .list-item {
     border-radius: 15px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 8px;
     margin: 8px;
     width: 100px;
     box-shadow: 2px 2px 5px black;
     cursor: pointer;
     display: inline-block;
+    text-align: center;
  }
 
  .list-item:hover {

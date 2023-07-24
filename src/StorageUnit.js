@@ -424,7 +424,8 @@ guestParkingList = []
 for (i = 0; i < numGuest; i++) {
 
     const guestSpace = document.createElement("li");
-    guestSpace.innerHTML = `Guest Space ${i + 1}`;
+    guestSpace.innerHTML = `Avaliable`;
+    guestSpace.style.background = "rgb(44,97,69)"
     guestSpace.className = "list-item";
     guestUl.appendChild(guestSpace);
     guestParkingList.push([guestSpace, false]);
@@ -444,24 +445,7 @@ for (i = 0; i < numGuest; i++) {
             console.log('true')
             viewGuest(spaceNum);
         }}  
-    // if (guestParkingList[i][1] = false) {
-    //     console.log('false')
-    //     (function (spaceNum) {
-    //         guestSpace.addEventListener("click", function() {
-    //         reserveGuest(spaceNum);
-    //         });
-    //     })(i + 1);
-    // } else if (guestParkingList[i][1] === true) {
-    //     console.log('true')
-    //     (function (spaceNum) {
-    //         guestSpace.addEventListener("click", function() {
-    //         viewGuest(spaceNum);
-    //         });
-    //     })(i + 1);
-    // } else {
-    //     console.log("not t of f")
-    //     console.log(guestParkingList[i][1])
-    // }
+   
     };
     
     function viewGuest(spaceNum) {
@@ -489,7 +473,8 @@ for (i = 0; i < numGuest; i++) {
         })};
 
     function remove(spaceNum, popupContainer) {
-        guestParkingList[spaceNum - 1][0].innerHTML = `Guest Space ${spaceNum}`
+        guestParkingList[spaceNum - 1][0].innerHTML = `Avaliable`
+        guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
         guestParkingList[spaceNum][1] = false
         popupContainer.style.display = "none";
     }
@@ -521,11 +506,10 @@ for (i = 0; i < numGuest; i++) {
 
     function reserve(spaceNum, popupContainer) {
         guestParkingList[spaceNum - 1][0].innerHTML = "Reserved"
+        guestParkingList[spaceNum - 1][0].style.background = "rgb(151,129,60)"
         guestParkingList[spaceNum][1] = true
         const guest = document.getElementById("first-name-g");
         popupContainer.style.display = "none";
-
-        //guestSpace.innerHTML = guest;
     }
 
 //accordian boxes
