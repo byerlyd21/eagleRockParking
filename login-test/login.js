@@ -33,9 +33,35 @@ const database = getDatabase(app);
 
 const userId = document.getElementById("user-id")
 const password = document.getElementById("password")
-const email = document.getElementById("email")
 
 const loginBtn = document.getElementById("login-btn");
+
+function authenticateUser() {
+    const dbref = ref(database);
+
+    get(child(dbRef, "userList/"+registerUserId.value)).then((snapshot)=>{
+        if (snapshot.exists()) {
+            
+        }
+        else {
+            set(ref(database, "userList"+ registerUserId.value),
+            {
+                fullname: registerLocation.value,
+                email: registerEmail.value,
+                username: registerUserId.value,
+                password: registerPassword.value
+            })
+            .then(()=> {
+                alert("User added successfully");
+            })
+            .catch((error)=> {
+                alert("alert"+error);
+            })
+        }
+    })
+}
+
+
 
 // Register --------------------------------------
 
@@ -52,6 +78,11 @@ function validation() {
     let email = /^[a-zA-Z0-9]+@\.(gmail|yahoo|outlook)\.com$/;
     let userregx = /^[a-zA-Z0-9]{5,}$/;
     
+    if (isEmptyOrSpaces(registerLocation.value) || isEmptyOrSpaces(registerEmail.value) || isEmptyOrSpaces(registerUserId.value) || isEmptyOrSpaces(registerPassword.value )) {
+        alert("All fields must be completed");
+        return false;
+    }
+
     if (!nameregx.test(registerLocation.value)) {
         alert("The name should only contain letters");
         return false;
