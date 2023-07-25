@@ -2,12 +2,12 @@
 //----------
 
 // Import the functions you need from the SDKs you need
-// import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-// import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app-auth.js";
-// import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set, child, get } from "firebase/database";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+// import { initializeApp } from "firebase/app";
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getDatabase, ref, set, child, get } from "firebase/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,7 +36,7 @@ const auth = getAuth(app);
 
 // Detect auth state
 
-onAuthStateChanged(aut, (user)=> {
+onAuthStateChanged(auth, (user)=> {
     if (!user == null) {
         console.log("logged in!")
     } else {
@@ -51,29 +51,28 @@ const password = document.getElementById("password")
 
 const loginBtn = document.getElementById("login-btn");
 
-function authenticateUser() {
-    const dbref = ref(database);
 
-    get(child(dbRef, "userList/"+registerUserId.value)).then((snapshot)=>{
+loginBtn.addEventListener("click", (e) => {
+    e.preventDefault()
+    authenticateUser();
+});
+
+function authenticateUser() {
+    const dbRef = ref(database);
+    console.log("A");
+    get(child(dbRef, "userList/"+userId.value)).then((snapshot)=>{
+        console.log("B");
         if (snapshot.exists()) {
-            
+            let dbpass = snapshot.val().password;
+            if (dbpass == password.value) {
+                login();
+            } else {
+                alert("password is incorrect")
+            }
+        } else {
+            alert("User does not exist")
         }
-        else {
-            set(ref(database, "userList"+ registerUserId.value),
-            {
-                fullname: registerLocation.value,
-                email: registerEmail.value,
-                username: registerUserId.value,
-                password: registerPassword.value
-            })
-            .then(()=> {
-                alert("User added successfully");
-            })
-            .catch((error)=> {
-                alert("alert"+error);
-            })
-        }
-    })
+    });
 }
 
 
@@ -158,12 +157,5 @@ registerBtn.addEventListener("click", registerUser);
 //   });
 // }
 
-loginBtn.addEventListener("click", (e) => {
-
-    if (userId.value === "DByerly" && password.value === "1234") {
-        window.location.href = "../src/StorageUnit.html"
-        e.preventDefault();
-    }
-});
 
 
