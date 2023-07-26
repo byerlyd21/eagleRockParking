@@ -66,6 +66,10 @@ codeDict = {
 
     "T" : "0", "H" : "1", "E" : "2", "C" : "3", "O" : "4", "M" : "5", "P" : "6", "A" : "7", "N" : "8", "Y" : "9"
 }
+codeClaculator = {
+
+    "0" : "T", "1" : "H", "2" : "E", "3" : "C", "4" : "O", "5" : "M", "6" : "P", "7" : "A", "8" : "N", "9" : "Y"
+}
 
 lpDict = {
     "78H92" : "bobjohnson"
@@ -163,7 +167,8 @@ function findCode() {
     } else {
         let result = ""
         for (i = 0; i < 5; i++) {
-            result += (codeDict[codeUpdate[i]])
+            //change back to code dict
+            result += (codeClaculator[codeUpdate[i]])
             if (result.length == 2) {
                 result += "-"
             }

@@ -96,10 +96,11 @@ function validation() {
     let email = /^[a-zA-Z0-9]+@\.(gmail|yahoo|outlook)\.com$/;
     let userregx = /^[a-zA-Z0-9]{5,}$/;
     
-    // if (isEmptyOrSpaces(registerLocation.value) || isEmptyOrSpaces(registerEmail.value) || isEmptyOrSpaces(registerUserId.value) || isEmptyOrSpaces(registerPassword.value )) {
-    //     alert("All fields must be completed");
-    //     return false;
-    // }
+    console.log(registerLocation)
+    if (isEmptyOrSpaces(registerLocation) || isEmptyOrSpaces(registerEmail) || isEmptyOrSpaces(registerUserId) || isEmptyOrSpaces(registerPassword.value )) {
+        alert("All fields must be completed");
+        return false;
+    }
 
     if (!nameregx.test(registerLocation.value)) {
         alert("The name should only contain letters");
@@ -146,7 +147,10 @@ function registerUser() {
     })
 }
 
-registerBtn.addEventListener("click", registerUser);
+registerBtn.addEventListener("click", (e)=> {
+    e.preventDefault()
+    registerUser()
+});
 
 // function writeUserData(userId, name, email, imageUrl) {
 //   const db = getDatabase();
