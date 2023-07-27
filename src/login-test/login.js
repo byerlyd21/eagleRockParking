@@ -139,7 +139,7 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
             alert("Account already exists")
         }
         else {
-            set(ref(database, "userList"+ registerUserId),
+            set(ref(database, "userList/"+ registerUserId),
             {
                 fullname: registerLocation,
                 email: registerEmail,
@@ -148,6 +148,7 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
             })
             .then(()=> {
                 alert("User added successfully");
+                printUsers(dbRef);
             })
             .catch((error)=> {
                 alert("alert"+error);
@@ -156,6 +157,25 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
     })
 }
 
+function printUsers(dbRef) {
+    get(child(dbRef, "userList")).then((snapshot) => {
+      if (snapshot.exists()) {
+        // The snapshot contains all user data under the "userList" node
+        // Loop through each user and log their information
+        snapshot.forEach((userSnapshot) => {
+          const userData = userSnapshot.val();
+          console.log("User ID:", userSnapshot.key);
+          console.log("Fullname:", userData.fullname);
+          console.log("Email:", userData.email);
+          console.log("Username:", userData.username);
+          console.log("Password:", userData.password);
+          console.log("------------");
+        });
+      } else {
+        console.log("No users found in the database.");
+      }
+    });
+  }
 
 // function writeUserData(userId, name, email, imageUrl) {
 //   const db = getDatabase();
