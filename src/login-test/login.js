@@ -46,96 +46,105 @@ onAuthStateChanged(auth, (user)=> {
 
 // Login  --------------------------------------
 
-const userId = document.getElementById("user-id")
-const password = document.getElementById("password")
-
 const loginBtn = document.getElementById("login-btn");
 
 
 loginBtn.addEventListener("click", (e) => {
-    e.preventDefault()
-    authenticateUser();
+    const userId = document.getElementById("user-id");
+    const password = document.getElementById("password");
+    if (isEmptyOrSpaces(userId.value) || isEmptyOrSpaces(password.value)) {
+        console.log("empty")
+        return;
+    } else {
+        e.preventDefault()
+        authenticateUser(userId.value, password.value);
+    }
 });
 
-function authenticateUser() {
+function authenticateUser(userId, password) {
     const dbRef = ref(database);
-    console.log("A");
-    get(child(dbRef, "userList/"+userId.value)).then((snapshot)=>{
+    get(child(dbRef, "userList/"+userId)).then((snapshot)=>{
         console.log("B");
         if (snapshot.exists()) {
             let dbpass = snapshot.val().password;
-            if (dbpass == password.value) {
+            if (dbpass == password) {
                 login();
             } else {
                 alert("password is incorrect")
             }
         } else {
-            alert("User does not exist")
+            alert(`userList/${userId} User does not exist`)
+            
         }
     });
 }
 
-
-
 // Register --------------------------------------
 
-const registerLocation = document.getElementById("register-location")
-const registerEmail = document.getElementById("register-email")
-const registerUserId = document.getElementById("register-user-id")
-const registerPassword = document.getElementById("register-password")
-
 const registerBtn = document.getElementById("register");
+
+registerBtn.addEventListener("click", (e)=> {
+    const registerLocation = document.getElementById("register-location");
+    const registerEmail = document.getElementById("register-email");
+    const registerUserId = document.getElementById("register-user-id");
+    const registerPassword = document.getElementById("register-password");
+    
+    if (isEmptyOrSpaces(registerLocation.value) || isEmptyOrSpaces(registerEmail.value) || isEmptyOrSpaces(registerUserId.value) || isEmptyOrSpaces(registerPassword.value )) {
+        return;
+    } else {
+        e.preventDefault()
+        registerUser(registerLocation.value, registerEmail.value, registerUserId.value, registerPassword.value)
+    }
+});
+
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;
 }
 
-function validation() {
-    console.log("validating");
+function validation(registerLocation, registerEmail, registerUserId, registerPassword) {
     let nameregx = /^[a-zA-Z]+$/;
-    let email = /^[a-zA-Z0-9]+@\.(gmail|yahoo|outlook)\.com$/;
+    let email = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/;
     let userregx = /^[a-zA-Z0-9]{5,}$/;
     
-    console.log(registerLocation)
-    if (isEmptyOrSpaces(registerLocation) || isEmptyOrSpaces(registerEmail) || isEmptyOrSpaces(registerUserId) || isEmptyOrSpaces(registerPassword.value )) {
+    if (isEmptyOrSpaces(registerLocation) || isEmptyOrSpaces(registerEmail) || isEmptyOrSpaces(registerUserId) || isEmptyOrSpaces(registerPassword)) {
         alert("All fields must be completed");
         return false;
     }
 
-    if (!nameregx.test(registerLocation.value)) {
+    if (!nameregx.test(registerLocation)) {
         alert("The name should only contain letters");
         return false;
     }
-    if (!email.test(registerEmail.value)) {
+    if (!email.test(registerEmail)) {
         alert("Enter valid email");
         return false;
     }
-    if (!userregx.test(registerUserId.value)) {
+    if (!userregx.test(registerUserId)) {
         alert("-username can only be alphanumeric\n-username must be at least 5 characters\n-username cannot contain spaces");
         return false;
     }
-    console.log("true")
     return true;
 }
 
-function registerUser() {
-    console.log("regersting");
-    if (!validation()) {
+function registerUser(registerLocation, registerEmail, registerUserId, registerPassword) {
+    if (!validation(registerLocation, registerEmail, registerUserId, registerPassword)) {
         return;
     };
+
     const dbRef = ref(database);
 
-    get(child(dbRef, "userList/"+registerUserId.value)).then((snapshot)=>{
+    get(child(dbRef, "userList/"+registerUserId)).then((snapshot)=>{
         if (snapshot.exists()) {
             alert("Account already exists")
         }
         else {
-            set(ref(database, "userList"+ registerUserId.value),
+            set(ref(database, "userList"+ registerUserId),
             {
-                fullname: registerLocation.value,
-                email: registerEmail.value,
-                username: registerUserId.value,
-                password: registerPassword.value
+                fullname: registerLocation,
+                email: registerEmail,
+                username: registerUserId,
+                password: registerPassword
             })
             .then(()=> {
                 alert("User added successfully");
@@ -147,10 +156,6 @@ function registerUser() {
     })
 }
 
-registerBtn.addEventListener("click", (e)=> {
-    e.preventDefault()
-    registerUser()
-});
 
 // function writeUserData(userId, name, email, imageUrl) {
 //   const db = getDatabase();
