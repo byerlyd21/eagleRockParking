@@ -3,7 +3,7 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 // import { initializeApp } from "firebase/app";
 // import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -52,23 +52,24 @@ const loginBtn = document.getElementById("login-btn");
 loginBtn.addEventListener("click", (e) => {
     const userId = document.getElementById("user-id");
     const password = document.getElementById("password");
+    const email = document.getElementById("email")
     if (isEmptyOrSpaces(userId.value) || isEmptyOrSpaces(password.value)) {
         console.log("empty")
         return;
     } else {
         e.preventDefault()
-        authenticateUser(userId.value, password.value);
+        authenticateUser(userId.value, password.value, email.value);
     }
 });
 
-function authenticateUser(userId, password) {
+function authenticateUser(userId, password, email) {
     const dbRef = ref(database);
     get(child(dbRef, "userList/"+userId)).then((snapshot)=>{
         console.log("B");
         if (snapshot.exists()) {
             let dbpass = snapshot.val().password;
             if (dbpass == password) {
-                login();
+                login(userId, password, email);
             } else {
                 alert("password is incorrect")
             }
@@ -79,6 +80,22 @@ function authenticateUser(userId, password) {
     });
 }
 
+
+function login(username, loginPassword, loginEmail) {
+    signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+    .then((userCredential) => {
+        // User successfully logged in
+        const user = userCredential.user;
+        sessionStorage.setItem('user', JSON.stringify(username));
+        console.log("Logged in user:", user);
+        //window.location.href = "../StorageUnit.html?username=" + encodeURIComponent(user);
+    })
+    .catch((error) => {
+        // Handle login errors
+        alert("Error signing in:"+error);
+        // Display an error message to the user or perform any necessary error handling.
+    });
+};
 // Register --------------------------------------
 
 const registerBtn = document.getElementById("register");
@@ -106,12 +123,12 @@ function validation(registerLocation, registerEmail, registerUserId, registerPas
     let nameregx = /^[a-zA-Z]+$/;
     let email = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|eaglerockmanagement)\.com$/;
     let userregx = /^[a-zA-Z0-9]{5,}$/;
+    let passwordregx = /^(?=.*[A-Z])(?=.*[0-9]).{6,}$/;
     
     if (isEmptyOrSpaces(registerLocation) || isEmptyOrSpaces(registerEmail) || isEmptyOrSpaces(registerUserId) || isEmptyOrSpaces(registerPassword)) {
         alert("All fields must be completed");
         return false;
     }
-
     if (!nameregx.test(registerLocation)) {
         alert("The name should only contain letters");
         return false;
@@ -123,6 +140,9 @@ function validation(registerLocation, registerEmail, registerUserId, registerPas
     if (!userregx.test(registerUserId)) {
         alert("-username can only be alphanumeric\n-username must be at least 5 characters\n-username cannot contain spaces");
         return false;
+    }
+    if (!passwordregx.test(registerPassword)) {
+        alert("-Password needs 6 or more characters\n-Password needs 1 or more uppercase letter\n-Password needs 1 or more number")
     }
     return true;
 }
@@ -157,7 +177,7 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
                   // Perform further actions after successful user creation
                 })
                 .catch((error) => {
-                  console.error("Error creating user:", error);
+                  console.error("Error creating user:"+error);
                 });
             })
             .catch((error)=> {
@@ -186,15 +206,6 @@ function printUsers(dbRef) {
       }
     });
   }
-
-// function writeUserData(userId, name, email, imageUrl) {
-//   const db = getDatabase();
-//   set(ref(db, 'users/' + userId), {
-//     username: name,
-//     email: email,
-//     profile_picture : imageUrl
-//   });
-// }
 
 
 

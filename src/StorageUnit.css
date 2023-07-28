@@ -60,7 +60,7 @@
 
 .body {
     padding: 16px;
-    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(../login-test/img/er-bkgrnd-img.jpeg);
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(./login-test/img/er-bkgrnd-img.jpeg);
 }
 
 .text-body {

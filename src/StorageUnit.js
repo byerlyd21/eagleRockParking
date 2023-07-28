@@ -1,40 +1,42 @@
-// import { initializeApp } from 'firebase/app';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
-// // TODO: Replace the following with your app's Firebase project configuration
-// const firebaseConfig = {
-    
-//         apiKey: process.env.API_KEY,
-//         authDomain: "eagle-rock-parking.firebaseapp.com",
-//         // The value of `databaseURL` depends on the location of the database
-//         databaseURL: "https://DATABASE_NAME.firebaseio.com",
-//         projectId: "eagle-rock-parking",
-//         storageBucket: "eagle-rock-parking.appspot.com",
-//         messagingSenderId: process.env.SENDER_ID,
-//         appId: process.env.APP_ID,
-//         // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
-//         measurementId: process.env.G-MEASUREMENT_ID
-// };
-
-//const app = initializeApp(firebaseConfig);
+const firebaseConfig = {
+    apiKey: "AIzaSyBCwWpAc4IndijYAxoSE5LDMy4orL__AE8",
+    authDomain: "eagle-rock-parking.firebaseapp.com",
+    databaseURL: "https://eagle-rock-parking-default-rtdb.firebaseio.com",
+    projectId: "eagle-rock-parking",
+    storageBucket: "eagle-rock-parking.appspot.com",
+    messagingSenderId: "123297692040",
+    appId: "1:123297692040:web:a013be1a203965a2e6e23d",
+    measurementId: "G-Y68B995K83"
+};
 
 
-//import { getDatabase, ref, set } from "firebase/database";
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
 
-//const database = getDatabase();
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username');
+const userMessage = document.getElementById("user-message");
+userMessage.innerHTML = `${username} Vehicle Information`
 
+const userJSON = sessionStorage.getItem('user');
+const user = JSON.parse(userJSON);
+console.log("User:", user);
 
-// function writeUserData(userId, name, email, imageUrl) {
-//   const db = getDatabase();
-//   set(ref(db, 'users/' + userId), {
-//     username: name,
-//     email: email,
-//     profile_picture : imageUrl
-//   });
-// }
+onAuthStateChanged(auth, (user)=> {
+    if (!user == null) {
+        console.log("logged in!")
+    } else {
+        //window.location.href = "./login-test/login.html"
+        console.log("no user")
+    }
+});
 
-//Objects
-
-unitDict = {
+const unitDict = {
 
     "bobjohnson" : { 
         "firstName" : "Bob",
@@ -50,7 +52,7 @@ unitDict = {
         "parkingSpace" : "regular"}
 };
 
-nameDict = [
+const nameDict = [
 
     false,
     "Garage 2 is unassigned",
@@ -62,16 +64,16 @@ nameDict = [
      unitDict["bobjohnson"]
 ]
 
-codeDict = {
+ const codeDict = {
 
     "T" : "0", "H" : "1", "E" : "2", "C" : "3", "O" : "4", "M" : "5", "P" : "6", "A" : "7", "N" : "8", "Y" : "9"
 }
-codeClaculator = {
+const codeClaculator = {
 
     "0" : "T", "1" : "H", "2" : "E", "3" : "C", "4" : "O", "5" : "M", "6" : "P", "7" : "A", "8" : "N", "9" : "Y"
 }
 
-lpDict = {
+const lpDict = {
     "78H92" : "bobjohnson"
 }
 
@@ -424,9 +426,9 @@ dropFile.addEventListener("drop", (e) => {
 
 const numGuest = 25;
 const guestUl = document.getElementById("guest-ul");
-guestParkingList = []
+const guestParkingList = []
 
-for (i = 0; i < numGuest; i++) {
+for (let i = 0; i < numGuest; i++) {
 
     const guestSpace = document.createElement("li");
     guestSpace.innerHTML = `Avaliable`;
