@@ -3,7 +3,7 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 // import { initializeApp } from "firebase/app";
 // import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -104,7 +104,7 @@ function isEmptyOrSpaces(str) {
 
 function validation(registerLocation, registerEmail, registerUserId, registerPassword) {
     let nameregx = /^[a-zA-Z]+$/;
-    let email = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/;
+    let email = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|eaglerockmanagement)\.com$/;
     let userregx = /^[a-zA-Z0-9]{5,}$/;
     
     if (isEmptyOrSpaces(registerLocation) || isEmptyOrSpaces(registerEmail) || isEmptyOrSpaces(registerUserId) || isEmptyOrSpaces(registerPassword)) {
@@ -149,9 +149,19 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
             .then(()=> {
                 alert("User added successfully");
                 printUsers(dbRef);
+                // Create an authenticated user with email and password
+                createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  console.log("Newly created user:", user);
+                  // Perform further actions after successful user creation
+                })
+                .catch((error) => {
+                  console.error("Error creating user:", error);
+                });
             })
             .catch((error)=> {
-                alert("alert"+error);
+                alert("Error adding user"+error);
             })
         }
     })
