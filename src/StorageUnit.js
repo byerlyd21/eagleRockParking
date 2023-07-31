@@ -21,7 +21,7 @@ const auth = getAuth(app);
 const urlParams = new URLSearchParams(window.location.search);
 const username = urlParams.get('username');
 const userMessage = document.getElementById("user-message");
-userMessage.innerHTML = `${username} Vehicle Information`
+userMessage.innerText = `${username} Vehicle Information`
 
 const userJSON = sessionStorage.getItem('user');
 const user = JSON.parse(userJSON);
@@ -88,22 +88,22 @@ searchUnitButton.addEventListener("click", searchUnit);
 
 function searchUnit() {
     if (fullName.value === "") {
-        unitInfo.innerHTML = `Please input a first and last name`
-        parkingInfo.innerHTML = "";
-        aptInfo.innerHTML = "";
+        unitInfo.innerText = `Please input a first and last name`
+        parkingInfo.innerText = "";
+        aptInfo.innerText = "";
         return;
     }
 
     let fullNameRaw = fullName.value.toLowerCase().replaceAll(/\s/g, "");
     
     if (!(fullNameRaw in unitDict)) {
-        unitInfo.innerHTML = `Please input a valid first and last name`
-        parkingInfo.innerHTML = "";
-        aptInfo.innerHTML = "";
+        unitInfo.innerText = `Please input a valid first and last name`
+        parkingInfo.innerText = "";
+        aptInfo.innerText = "";
     } else {
-    unitInfo.innerHTML = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
-    parkingInfo.innerHTML = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
-    aptInfo.innerHTML = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
+    unitInfo.innerText = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
+    parkingInfo.innerText = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
+    aptInfo.innerText = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
     }
 }
 
@@ -119,9 +119,9 @@ searchNameButton.addEventListener("click", searchName);
 function searchName() {
     
     if (garageNum.value === "") {
-        nameInfo.innerHTML = `Please input a garage number`
-        parkingInfoA.innerHTML = "";
-        aptInfoA.innerHTML = "";
+        nameInfo.innerText = `Please input a garage number`
+        parkingInfoA.innerText = "";
+        aptInfoA.innerText = "";
         return;
     }
 
@@ -131,17 +131,17 @@ function searchName() {
     
     //Check to make sure garage number is a number and between 1 and 8
     if ((garageNumRaw > nameDict.length || garageNumRaw === 0 || isNaN(garageNumRaw))) {
-        nameInfo.innerHTML = `Please input a valid garage number`
-        parkingInfoA.innerHTML = "";
-        aptInfoA.innerHTML = "";
+        nameInfo.innerText = `Please input a valid garage number`
+        parkingInfoA.innerText = "";
+        aptInfoA.innerText = "";
     } else if (nameDict[garageNumRaw - 1]["firstName"] != undefined) {
-        nameInfo.innerHTML = `Name: ${nameDict[garageNumRaw - 1]["firstName"]} ${nameDict[garageNumRaw - 1]["lastName"]}`;
-        parkingInfoA.innerHTML = `Parking: ${nameDict[garageNumRaw - 1]["parking"]}`;
-        aptInfoA.innerHTML = `Apartment: ${nameDict[garageNumRaw - 1]["apartment"]}`;
+        nameInfo.innerText = `Name: ${nameDict[garageNumRaw - 1]["firstName"]} ${nameDict[garageNumRaw - 1]["lastName"]}`;
+        parkingInfoA.innerText = `Parking: ${nameDict[garageNumRaw - 1]["parking"]}`;
+        aptInfoA.innerText = `Apartment: ${nameDict[garageNumRaw - 1]["apartment"]}`;
     } else {
-        nameInfo.innerHTML = nameDict[garageNumRaw - 1];
-        parkingInfoA.innerHTML = "";
-        aptInfoA.innerHTML = "";
+        nameInfo.innerText = nameDict[garageNumRaw - 1];
+        parkingInfoA.innerText = "";
+        aptInfoA.innerText = "";
     }
 
 }
@@ -156,26 +156,26 @@ searchAptButton.addEventListener("click", findCode);
 function findCode() {
     
     if (apt.value === "") {
-        parkingCode.innerHTML = `Please input an parking code`
+        parkingCode.innerText = `Please input an parking code`
         return;
     }
 
     let codeUpdate = apt.value.replaceAll(/[^\w\s]/g, "").toUpperCase();
     
     if (!(codeUpdate.length === 5)) {
-        parkingCode.innerHTML = `Please input a valid parking code`
+        parkingCode.innerText = `Please input a valid parking code`
         return;
 
     } else {
         let result = ""
-        for (i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++) {
             //change back to code dict
             result += (codeClaculator[codeUpdate[i]])
             if (result.length == 2) {
                 result += "-"
             }
         }
-            parkingCode.innerHTML = `Apt: ${result}`
+            parkingCode.innerText = `Apt: ${result}`
     }
 }
 
@@ -192,10 +192,10 @@ searchLpBtn.addEventListener("click", searchLp);
 function searchLp() {
     console.log("working")
     if (licensePlate.value === "") {
-        lpName.innerHTML = `Please input the license plate`
-        lpApt.innerHTML = ""
-        lpParkingType.innerHTML = ""
-        lpSpaceNum.innerHTML = ""
+        lpName.innerText = `Please input the license plate`
+        lpApt.innerText = ""
+        lpParkingType.innerText = ""
+        lpSpaceNum.innerText = ""
         return;
     }
     //remove special charecters and whitespace
@@ -203,23 +203,23 @@ function searchLp() {
     console.log(lpRaw)
 
     if (!(lpRaw in lpDict )) {
-        lpName.innerHTML = `License plate not in database`
-        lpApt.innerHTML = ""
-        lpParkingType.innerHTML = ""
-        lpSpaceNum.innerHTML = ""
+        lpName.innerText = `License plate not in database`
+        lpApt.innerText = ""
+        lpParkingType.innerText = ""
+        lpSpaceNum.innerText = ""
 
     } else if (lpRaw.length < 0 || lpRaw.length > 10) {
-        lpName.innerHTML = `Please input a valid license plate`
-        lpApt.innerHTML = ""
-        lpParkingType.innerHTML = ""
-        lpSpaceNum.innerHTML = ""
+        lpName.innerText = `Please input a valid license plate`
+        lpApt.innerText = ""
+        lpParkingType.innerText = ""
+        lpSpaceNum.innerText = ""
         return; 
     } else {
         //finding the name from the lpDict, and getting the rest of the info with the name and unitDict
-        lpName.innerHTML = `Name: ${unitDict[lpDict[lpRaw]]["firstName"]} ${unitDict[lpDict[lpRaw]]["lastName"]}`
-        lpApt.innerHTML = `Apt: ${unitDict[lpDict[lpRaw]]["apartment"]}`
-        lpParkingType.innerHTML = `Parking Type: ${unitDict[lpDict[lpRaw]]["parkingType"]}`
-        lpSpaceNum.innerHTML = `Paring Space: ${unitDict[lpDict[lpRaw]]["parkingSpace"]}`
+        lpName.innerText = `Name: ${unitDict[lpDict[lpRaw]]["firstName"]} ${unitDict[lpDict[lpRaw]]["lastName"]}`
+        lpApt.innerText = `Apt: ${unitDict[lpDict[lpRaw]]["apartment"]}`
+        lpParkingType.innerText = `Parking Type: ${unitDict[lpDict[lpRaw]]["parkingType"]}`
+        lpSpaceNum.innerText = `Paring Space: ${unitDict[lpDict[lpRaw]]["parkingSpace"]}`
     }
 }
 
@@ -256,10 +256,10 @@ function addInfo() {
     
     for (i = 0; i < 8; i ++) {
         if (fields[i].value === "") {
-            errors[i].innerHTML = "This field is missing a value"
+            errors[i].innerText = "This field is missing a value"
             return;
         } else {
-            errors[i].innerHTML = "";
+            errors[i].innerText = "";
         }
     }
     
@@ -271,13 +271,13 @@ function addInfo() {
     }
     
     if (parkingSpaceNum.value === "" && parkingType.value.toLowerCase() === "premier") {
-        parkingSpaceNumError.innerHTML = "Premier parking needs a space number"
+        parkingSpaceNumError.innerText = "Premier parking needs a space number"
     } else if (parkingSpaceNum.value === "") {
         parkingSpaceNum.value = "Not Applicable"
     } else if (parkingSpaceNum.value === "" && parkingType.value.toLowerCase() === "covered") {
         parkingSpaceNumError.value = "Covered parking needs a space number"
     } else {
-        parkingSpaceNumError.innerHTML = ""
+        parkingSpaceNumError.innerText = ""
     }
     
     if (garageNumber.value === "") {
@@ -298,11 +298,11 @@ function addGarage(newGarageRaw, firstLast) {
     if (newGarageRaw < 1) {
         return;
     } else if (newGarageRaw > 8) {
-        errors[9].innerHTML = "MetroWest only has garages 1-8"
+        errors[9].innerText = "MetroWest only has garages 1-8"
     } else if (nameDict[newGarageRaw -1] === false) {
         nameDict[newGarageRaw -1] = unitDict[firstLast]
     } else {
-        errors[9].innerHTML = "This garage is already taken"
+        errors[9].innerText = "This garage is already taken"
         return;
     }
 }
@@ -352,7 +352,7 @@ function removeResident() {
     const removedResConf = document.getElementById("removed-resident-confirmation");
 
     if (residentRemoved.value === "") {
-        removedResConf.innerHTML = "Please input resident you would like to remove"
+        removedResConf.innerText = "Please input resident you would like to remove"
         return;
     }
     
@@ -360,11 +360,11 @@ function removeResident() {
     let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
     
     if (residentRemovedRaw in unitDict) {
-        removedResConf.innerHTML = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
+        removedResConf.innerText = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
         delete unitDict[residentRemovedRaw]
 
     } else {
-        removedResConf.innerHTML = "Resident not found"
+        removedResConf.innerText = "Resident not found"
     }
 };
 
@@ -431,7 +431,7 @@ const guestParkingList = []
 for (let i = 0; i < numGuest; i++) {
 
     const guestSpace = document.createElement("li");
-    guestSpace.innerHTML = `Avaliable`;
+    guestSpace.innerText = `Avaliable`;
     guestSpace.style.background = "rgb(44,97,69)"
     guestSpace.className = "list-item";
     guestUl.appendChild(guestSpace);
@@ -474,13 +474,13 @@ for (let i = 0; i < numGuest; i++) {
             }
         });
         const removeGuestbtn = document.getElementById("reserve-button")
-        removeGuestbtn.innerHTML = "Remove Guest"
+        removeGuestbtn.innerText = "Remove Guest"
         removeGuestbtn.addEventListener("click",  ()=> {
             remove(spaceNum, popupContainer)
         })};
 
     function remove(spaceNum, popupContainer) {
-        guestParkingList[spaceNum - 1][0].innerHTML = `Avaliable`
+        guestParkingList[spaceNum - 1][0].innerText = `Avaliable`
         guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
         guestParkingList[spaceNum][1] = false
         popupContainer.style.display = "none";
@@ -506,13 +506,13 @@ for (let i = 0; i < numGuest; i++) {
             }
         });
         const reserveGuestbtn = document.getElementById("reserve-button")
-        reserveGuestbtn.innerHTML = "Reserve"
+        reserveGuestbtn.innerText = "Reserve"
         reserveGuestbtn.addEventListener("click", ()=> {
             reserve(spaceNum, popupContainer)
         })};
 
     function reserve(spaceNum, popupContainer) {
-        guestParkingList[spaceNum - 1][0].innerHTML = "Reserved"
+        guestParkingList[spaceNum - 1][0].innerText = "Reserved"
         guestParkingList[spaceNum - 1][0].style.background = "rgb(151,129,60)"
         guestParkingList[spaceNum][1] = true
         const guest = document.getElementById("first-name-g");

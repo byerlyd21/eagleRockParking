@@ -28,7 +28,6 @@ const firebaseConfig = {
 };
 
 
-
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
@@ -87,7 +86,7 @@ function login(username, loginPassword, loginEmail) {
         // User successfully logged in
         const user = userCredential.user;
         sessionStorage.setItem('user', JSON.stringify(username));
-        console.log("Logged in user:", user);
+        console.log("Logged in user:", user, username);
         //window.location.href = "../StorageUnit.html?username=" + encodeURIComponent(user);
     })
     .catch((error) => {
