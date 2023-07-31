@@ -20,8 +20,11 @@ const auth = getAuth(app);
 const userJSON = sessionStorage.getItem('user');
 const userCode = JSON.parse(userJSON);
 
+const userLocationInDB = "userList/" + userCode
+const dbRef = ref(database);
+
 // Fetch the user data from the Realtime Database using the user's uid
-get(child(ref(database), "userList/" + userCode)).then((snapshot) => {
+get(child(dbRef, userLocationInDB)).then((snapshot) => {
     if (snapshot.exists()) {
         const userData = snapshot.val();
         console.log("Username:", userData.username);
@@ -118,7 +121,7 @@ function searchUnit() {
     }
 }
 
-//Search frist and last name by garageNum variables
+//Search first and last name by garageNum variables
 const garageNum = document.getElementById("unit");
 const searchNameButton = document.getElementById("search-name-button");
 const nameInfo = document.getElementById("name-info");
@@ -265,7 +268,7 @@ const errors = [firstNameError, lastNameError, aptError, yearError, makeError, m
 
 function addInfo() {
     
-    for (i = 0; i < 8; i ++) {
+    for (let i = 0; i < 8; i ++) {
         if (fields[i].value === "") {
             errors[i].innerText = "This field is missing a value"
             return;
@@ -299,8 +302,6 @@ function addInfo() {
         console.log(newGarageRaw, garageNumber.value)
         confirmAddInfo(newGarageRaw)
     }
-    
-
 }
 
 
@@ -352,6 +353,18 @@ function confirmAddInfo(newGarageRaw) {
         "parkingType" : parkingType.value,
         "parkingSpace" : parkingSpaceNum.value};
     console.log(unitDict)
+
+    updateRTDB(unitDict[firstLast], firstLast);
+}
+
+function updateRTDB(object, firstLast) {
+    set(ref(database, userLocationInDB + "/residentData/" + firstLast), object)
+    .then(() => {
+        console.log("Data set successfully!");
+    })
+    .catch((error) => {
+        console.error("Error setting data:", error);
+    });
 }
 
 // Remove Resident
