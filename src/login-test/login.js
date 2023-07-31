@@ -3,7 +3,7 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 // import { initializeApp } from "firebase/app";
 // import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -73,7 +73,7 @@ function authenticateUser(userId, password, email) {
                 alert("password is incorrect")
             }
         } else {
-            alert(`userList/${userId} User does not exist`)
+            alert(`User ${userId} User does not exist`)
             
         }
     });
@@ -87,7 +87,7 @@ function login(username, loginPassword, loginEmail) {
         const user = userCredential.user;
         sessionStorage.setItem('user', JSON.stringify(username));
         console.log("Logged in user:", user, username);
-        //window.location.href = "../StorageUnit.html?username=" + encodeURIComponent(user);
+        window.location.href = "../StorageUnit.html?username=" + encodeURIComponent(user);
     })
     .catch((error) => {
         // Handle login errors
@@ -171,7 +171,7 @@ function registerUser(registerLocation, registerEmail, registerUserId, registerP
                 // Create an authenticated user with email and password
                 createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
                 .then((userCredential) => {
-                  const user = userCredential.user;
+                  const user = userCredential.user;    
                   console.log("Newly created user:", user);
                   // Perform further actions after successful user creation
                 })

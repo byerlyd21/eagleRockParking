@@ -17,21 +17,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
-
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
-const userMessage = document.getElementById("user-message");
-userMessage.innerText = `${username} Vehicle Information`
-
 const userJSON = sessionStorage.getItem('user');
-const user = JSON.parse(userJSON);
-console.log("User:", user);
+const userCode = JSON.parse(userJSON);
+
+// Fetch the user data from the Realtime Database using the user's uid
+get(child(ref(database), "userList/" + userCode)).then((snapshot) => {
+    if (snapshot.exists()) {
+        const userData = snapshot.val();
+        console.log("Username:", userData.username);
+        const userMessage = document.getElementById("user-message");
+        userMessage.innerText = `${userData.fullname} Vehicle Information`
+        // Now you have access to the 'username' property for the logged-in user
+    } else {
+        console.log("User data not found");
+        console.log(`user.uid: ${user.uid}`)
+    }
+}).catch((error) => {
+    console.error("Error fetching user data:", error);
+});
+
 
 onAuthStateChanged(auth, (user)=> {
-    if (!user == null) {
-        console.log("logged in!")
+    if (user) {
+        console.log(`${user} logged in!`)
+        console.log(user)
     } else {
-        //window.location.href = "./login-test/login.html"
+        window.location.href = "./login-test/login.html"
         console.log("no user")
     }
 });
@@ -64,7 +75,7 @@ const nameDict = [
      unitDict["bobjohnson"]
 ]
 
- const codeDict = {
+const codeDict = {
 
     "T" : "0", "H" : "1", "E" : "2", "C" : "3", "O" : "4", "M" : "5", "P" : "6", "A" : "7", "N" : "8", "Y" : "9"
 }
