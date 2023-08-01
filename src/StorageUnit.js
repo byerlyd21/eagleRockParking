@@ -32,8 +32,7 @@ get(child(dbRef, userLocationInDB)).then((snapshot) => {
         userMessage.innerText = `${userData.fullname} Vehicle Information`
         // Now you have access to the 'username' property for the logged-in user
     } else {
-        console.log("User data not found");
-        console.log(`user.uid: ${user.uid}`)
+        alert("No User: You will be logged out")
     }
 }).catch((error) => {
     console.error("Error fetching user data:", error);
@@ -110,15 +109,33 @@ function searchUnit() {
 
     let fullNameRaw = fullName.value.toLowerCase().replaceAll(/\s/g, "");
     
-    if (!(fullNameRaw in unitDict)) {
-        unitInfo.innerText = `Please input a valid first and last name`
-        parkingInfo.innerText = "";
-        aptInfo.innerText = "";
-    } else {
-    unitInfo.innerText = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
-    parkingInfo.innerText = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
-    aptInfo.innerText = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
-    }
+    findInDB(fullNameRaw);
+    // if (!(fullNameRaw in unitDict)) {
+    //     unitInfo.innerText = `Please input a valid first and last name`
+    //     parkingInfo.innerText = "";
+    //     aptInfo.innerText = "";
+    // } else {
+    // unitInfo.innerText = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
+    // parkingInfo.innerText = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
+    // aptInfo.innerText = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
+    // }
+}
+
+function findInDB(fullNameRaw) {
+    get(child(dbRef, userLocationInDB + "/residentData/" + fullNameRaw)).then((snapshot)=>{
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            unitInfo.innerText = `Unit: ${userData.garage}`;
+            parkingInfo.innerText = `Parking: ${userData.parkingType}`;
+            aptInfo.innerText = `Apartment: ${userData.apartment}`;
+        }
+        else {
+            alert("Resident not in database")
+            unitInfo.innerText = "";
+            parkingInfo.innerText = "";
+            aptInfo.innerText = "";
+        }
+    });
 }
 
 //Search first and last name by garageNum variables
@@ -308,14 +325,16 @@ function addInfo() {
 function addGarage(newGarageRaw, firstLast) {
 
     if (newGarageRaw < 1) {
-        return;
+        return false;
     } else if (newGarageRaw > 8) {
         errors[9].innerText = "MetroWest only has garages 1-8"
+        return false;
     } else if (nameDict[newGarageRaw -1] === false) {
         nameDict[newGarageRaw -1] = unitDict[firstLast]
+        return true;
     } else {
         errors[9].innerText = "This garage is already taken"
-        return;
+        return false;
     }
 }
 
@@ -338,32 +357,33 @@ function confirmAddInfo(newGarageRaw) {
     
     let firstLast = (firstName.value + lastName.value).toLowerCase()
 
-    addGarage(newGarageRaw, firstLast);
+    if (addGarage(newGarageRaw, firstLast)) {
     
-    unitDict[firstLast] = {
-        "firstName" : firstName.value,
-        "lastName" : lastName.value, 
-        "apartment" : apartment.value, 
-        "year" : year.value,
-        "make" : make.value,
-        "model" : model.value,
-        "lp" : lp.value,
-        "lpState" : lpState.value,
-        "garage" : garageNumber.value, 
-        "parkingType" : parkingType.value,
-        "parkingSpace" : parkingSpaceNum.value};
-    console.log(unitDict)
+         let object = {
+            "firstName" : firstName.value,
+            "lastName" : lastName.value, 
+            "apartment" : apartment.value, 
+            "year" : year.value,
+            "make" : make.value,
+            "model" : model.value,
+            "lp" : lp.value,
+            "lpState" : lpState.value,
+            "garage" : garageNumber.value, 
+            "parkingType" : parkingType.value,
+            "parkingSpace" : parkingSpaceNum.value};
+        console.log(unitDict)
 
-    updateRTDB(unitDict[firstLast], firstLast);
+        updateRTDB(object, firstLast);
+    };
 }
 
 function updateRTDB(object, firstLast) {
     set(ref(database, userLocationInDB + "/residentData/" + firstLast), object)
     .then(() => {
-        console.log("Data set successfully!");
+        alert("Resident add succusfully!")
     })
     .catch((error) => {
-        console.error("Error setting data:", error);
+        alert("Error setting data: ", error);
     });
 }
 
