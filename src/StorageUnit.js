@@ -110,15 +110,6 @@ function searchUnit() {
     let fullNameRaw = fullName.value.toLowerCase().replaceAll(/\s/g, "");
     
     findInDB(fullNameRaw);
-    // if (!(fullNameRaw in unitDict)) {
-    //     unitInfo.innerText = `Please input a valid first and last name`
-    //     parkingInfo.innerText = "";
-    //     aptInfo.innerText = "";
-    // } else {
-    // unitInfo.innerText = `Unit: ${unitDict[fullNameRaw]["garage"]}`;
-    // parkingInfo.innerText = `Parking: ${unitDict[fullNameRaw]["parkingType"]}`;
-    // aptInfo.innerText = `Apartment: ${unitDict[fullNameRaw]["apartment"]}`;
-    // }
 }
 
 function findInDB(fullNameRaw) {
@@ -165,16 +156,26 @@ function searchName() {
         nameInfo.innerText = `Please input a valid garage number`
         parkingInfoA.innerText = "";
         aptInfoA.innerText = "";
-    } else if (nameDict[garageNumRaw - 1]["firstName"] != undefined) {
-        nameInfo.innerText = `Name: ${nameDict[garageNumRaw - 1]["firstName"]} ${nameDict[garageNumRaw - 1]["lastName"]}`;
-        parkingInfoA.innerText = `Parking: ${nameDict[garageNumRaw - 1]["parking"]}`;
-        aptInfoA.innerText = `Apartment: ${nameDict[garageNumRaw - 1]["apartment"]}`;
     } else {
-        nameInfo.innerText = nameDict[garageNumRaw - 1];
-        parkingInfoA.innerText = "";
-        aptInfoA.innerText = "";
+        findGarageInDB(garageNumRaw);
     }
 
+}
+
+function findGarageInDB(garageNumRaw) {
+    get(child(dbRef, userLocationInDB + "/garages/" + ("garage" + garageNumRaw))).then((snapshot)=>{
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            nameInfo.innerText = `Name: ${userData.firstName} ${userData.lastName}`;
+            aptInfoA.innerText = `Apartment: ${userData.apartment}`;
+        }
+        else {
+            alert("This garage is unassigned")
+            nameInfo.innerText = "";
+            parkingInfoA.innerText = "";
+            aptInfoA.innerText = "";
+        }
+    });
 }
 
 //Search parking code by apt
@@ -221,7 +222,7 @@ const lpSpaceNum = document.getElementById("lp-space-num");
 searchLpBtn.addEventListener("click", searchLp);
 
 function searchLp() {
-    console.log("working")
+
     if (licensePlate.value === "") {
         lpName.innerText = `Please input the license plate`
         lpApt.innerText = ""
@@ -233,25 +234,34 @@ function searchLp() {
     let lpRaw = licensePlate.value.replaceAll(/[^\w\s\d]/g, "").toUpperCase();
     console.log(lpRaw)
 
-    if (!(lpRaw in lpDict )) {
-        lpName.innerText = `License plate not in database`
-        lpApt.innerText = ""
-        lpParkingType.innerText = ""
-        lpSpaceNum.innerText = ""
-
-    } else if (lpRaw.length < 0 || lpRaw.length > 10) {
+    if (lpRaw.length < 1 || lpRaw.length > 10) {
         lpName.innerText = `Please input a valid license plate`
         lpApt.innerText = ""
         lpParkingType.innerText = ""
         lpSpaceNum.innerText = ""
         return; 
     } else {
-        //finding the name from the lpDict, and getting the rest of the info with the name and unitDict
-        lpName.innerText = `Name: ${unitDict[lpDict[lpRaw]]["firstName"]} ${unitDict[lpDict[lpRaw]]["lastName"]}`
-        lpApt.innerText = `Apt: ${unitDict[lpDict[lpRaw]]["apartment"]}`
-        lpParkingType.innerText = `Parking Type: ${unitDict[lpDict[lpRaw]]["parkingType"]}`
-        lpSpaceNum.innerText = `Paring Space: ${unitDict[lpDict[lpRaw]]["parkingSpace"]}`
+       findLicensePlateInDB(lpRaw);
     }
+}
+
+function findLicensePlateInDB(lpRaw) {
+    get(child(dbRef, userLocationInDB + "/licensePlates/" + lpRaw)).then((snapshot)=>{
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            lpName.innerText = `Name: ${userData.firstName} ${userData.lastName}`;
+            aptInfoA.innerText = `Apartment: ${userData.apartment}`;
+            lpSpaceNum.innerText = `Space: ${userData.parkingSpace}`;
+            lpParkingType.innerText = `Type: ${userData.parkingType}`;
+        }
+        else {
+            alert("License Plate not in database")
+            lpName.innerText = "";
+            aptInfoA.innerText = "";
+            lpSpaceNum.innerText = "";
+            lpParkingType.innerText = "";
+        }
+    });
 }
 
 //Add New information
@@ -358,15 +368,16 @@ function confirmAddInfo(newGarageRaw) {
     let firstLast = (firstName.value + lastName.value).toLowerCase()
 
     if (addGarage(newGarageRaw, firstLast)) {
+        let lpRaw = lp.value.replaceAll(/[^\w\s\d]/g, "").toUpperCase();
     
-         let nameObject = {
+        let nameObject = {
             "firstName" : firstName.value,
             "lastName" : lastName.value, 
             "apartment" : apartment.value, 
             "year" : year.value,
             "make" : make.value,
             "model" : model.value,
-            "lp" : lp.value,
+            "lp" : lpRaw,
             "lpState" : lpState.value,
             "garage" : garageNumber.value, 
             "parkingType" : parkingType.value,
@@ -389,7 +400,7 @@ function confirmAddInfo(newGarageRaw) {
 
         updateRTDBname(nameObject, firstLast);
         updateRTDBgarage(garageObject, garageNumber.value);
-        updateRTDBlicensePlate(licensePlateObject, lp.value);
+        updateRTDBlicensePlate(licensePlateObject, lpRaw);
     };
 }
 
