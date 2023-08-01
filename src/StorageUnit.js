@@ -250,14 +250,14 @@ function findLicensePlateInDB(lpRaw) {
         if (snapshot.exists()) {
             const userData = snapshot.val();
             lpName.innerText = `Name: ${userData.firstName} ${userData.lastName}`;
-            aptInfoA.innerText = `Apartment: ${userData.apartment}`;
+            lpApt.innerText = `Apartment: ${userData.apartment}`;
             lpSpaceNum.innerText = `Space: ${userData.parkingSpace}`;
             lpParkingType.innerText = `Type: ${userData.parkingType}`;
         }
         else {
             alert("License Plate not in database")
             lpName.innerText = "";
-            aptInfoA.innerText = "";
+            lpApt.innerText = "";
             lpSpaceNum.innerText = "";
             lpParkingType.innerText = "";
         }
