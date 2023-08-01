@@ -359,7 +359,7 @@ function confirmAddInfo(newGarageRaw) {
 
     if (addGarage(newGarageRaw, firstLast)) {
     
-         let object = {
+         let nameObject = {
             "firstName" : firstName.value,
             "lastName" : lastName.value, 
             "apartment" : apartment.value, 
@@ -370,23 +370,62 @@ function confirmAddInfo(newGarageRaw) {
             "lpState" : lpState.value,
             "garage" : garageNumber.value, 
             "parkingType" : parkingType.value,
-            "parkingSpace" : parkingSpaceNum.value};
-        console.log(unitDict)
+            "parkingSpace" : parkingSpaceNum.value
+        };
 
-        updateRTDB(object, firstLast);
+        let garageObject = {
+            "firstName" : firstName.value,
+            "lastName" : lastName.value, 
+            "apartment" : apartment.value, 
+        };
+
+        let licensePlateObject = {
+            "firstName" : firstName.value,
+            "lastName" : lastName.value, 
+            "apartment" : apartment.value,
+            "parkingType" : parkingType.value,
+            "parkingSpace" : parkingSpaceNum.value
+        };
+
+        updateRTDBname(nameObject, firstLast);
+        updateRTDBgarage(garageObject, garageNumber.value);
+        updateRTDBlicensePlate(licensePlateObject, lp.value);
     };
 }
 
-function updateRTDB(object, firstLast) {
-    set(ref(database, userLocationInDB + "/residentData/" + firstLast), object)
+// Add resident to residentInfo in RTDB
+
+function updateRTDBname(nameObject, firstLast) {
+    set(ref(database, userLocationInDB + "/residentData/" + firstLast), nameObject)
     .then(() => {
         alert("Resident add succusfully!")
     })
     .catch((error) => {
-        alert("Error setting data: ", error);
+        alert("Error setting resident info: ", error);
     });
 }
+// Add resident info to garages in RTDB
 
+function updateRTDBgarage(garageObject, garageNumber) {
+    set(ref(database, userLocationInDB + "/garages/" + ("garage" + garageNumber)), garageObject)
+    .then(() => {
+        console.log("garage added")
+    })
+    .catch((error) => {
+        alert("Error setting garage data: ", error);
+    });
+}
+// Add resident info to licensePlates in RTDB
+
+function updateRTDBlicensePlate(licensePlateObject, lp) {
+    set(ref(database, userLocationInDB + "/licensePlates/" + lp), licensePlateObject)
+    .then(() => {
+        console.log("license plate added")
+    })
+    .catch((error) => {
+        alert("Error setting license plate data: ", error);
+    });
+}
 // Remove Resident
 const removeBtn = document.getElementById("remove-resident-button")
 removeBtn.addEventListener("click", removeResident);
