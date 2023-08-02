@@ -470,15 +470,29 @@ function removefromDB(residentRemovedRaw) {
             let firstName = userData.firstName;
             let lastName = userData.lastName;
 
-            const dataRef = ref(database, userLocationInDB + "/residentData/" + residentRemovedRaw);
-
-            remove(dataRef)
-                .then( ()=> {
-                    alert(`${firstName} ${lastName} was removed from database`)
-                })
-                .catch((error) => {
-                    console.error("Error removing data:", error);
-                  });
+            const dataRefResident = ref(database, userLocationInDB + "/residentData/" + residentRemovedRaw);
+            const dataRefGarage = ref(database, userLocationInDB + "/garages/" + ("garage" + userData.garage));
+            const dataRefLicense = ref(database, userLocationInDB + "/licensePlates/" + userData.lp);
+            // remove resident from garages in RTDB
+            try {
+                if (!userData.garage == false) {
+                    set(dataRefGarage, false)
+                } else {
+                    console.log("garage was false")
+                }
+                // remove resident from licensePlate in RTDB
+                remove(dataRefLicense)
+                // remove resident from resident info in RTDB
+                remove(dataRefResident)
+                    .then( ()=> {
+                        alert(`${firstName} ${lastName} was removed from database`)
+                    })
+                    .catch((error) => {
+                        console.error("Error removing data:", error);
+                      });
+            } catch (error) {
+                alert("Error removing resident: ", error)
+            }
         }
         else {
             alert("Resident not in database")
