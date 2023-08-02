@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { getDatabase, ref, set, child, get, remove } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCwWpAc4IndijYAxoSE5LDMy4orL__AE8",
@@ -33,6 +33,7 @@ get(child(dbRef, userLocationInDB)).then((snapshot) => {
         // Now you have access to the 'username' property for the logged-in user
     } else {
         alert("No User: You will be logged out")
+        window.location.href = "./login-test/login.html"
     }
 }).catch((error) => {
     console.error("Error fetching user data:", error);
@@ -41,7 +42,7 @@ get(child(dbRef, userLocationInDB)).then((snapshot) => {
 
 onAuthStateChanged(auth, (user)=> {
     if (user) {
-        console.log(`${user} logged in!`)
+        console.log(`${user.email} logged in!`)
         console.log(user)
     } else {
         window.location.href = "./login-test/login.html"
@@ -452,16 +453,38 @@ function removeResident() {
     
     //change to unitDict key format (lower-case with no spaces)
     let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
-    
-    if (residentRemovedRaw in unitDict) {
-        removedResConf.innerText = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
-        delete unitDict[residentRemovedRaw]
+    removefromDB(residentRemovedRaw);
+    // if (residentRemovedRaw in unitDict) {
+    //     removedResConf.innerText = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
+    //     delete unitDict[residentRemovedRaw]
 
-    } else {
-        removedResConf.innerText = "Resident not found"
-    }
+    // } else {
+    //     removedResConf.innerText = "Resident not found"
+    // }
 };
 
+function removefromDB(residentRemovedRaw) {
+    get(child(dbRef, userLocationInDB + "/residentData/" + residentRemovedRaw)).then((snapshot)=>{
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            let firstName = userData.firstName;
+            let lastName = userData.lastName;
+
+            const dataRef = ref(database, userLocationInDB + "/residentData/" + residentRemovedRaw);
+
+            remove(dataRef)
+                .then( ()=> {
+                    alert(`${firstName} ${lastName} was removed from database`)
+                })
+                .catch((error) => {
+                    console.error("Error removing data:", error);
+                  });
+        }
+        else {
+            alert("Resident not in database")
+        }
+    });
+}
 
 
 // Update Database with CSV file
@@ -570,10 +593,10 @@ for (let i = 0; i < numGuest; i++) {
         const removeGuestbtn = document.getElementById("reserve-button")
         removeGuestbtn.innerText = "Remove Guest"
         removeGuestbtn.addEventListener("click",  ()=> {
-            remove(spaceNum, popupContainer)
+            removeGuest(spaceNum, popupContainer)
         })};
 
-    function remove(spaceNum, popupContainer) {
+    function removeGuest(spaceNum, popupContainer) {
         guestParkingList[spaceNum - 1][0].innerText = `Avaliable`
         guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
         guestParkingList[spaceNum][1] = false
