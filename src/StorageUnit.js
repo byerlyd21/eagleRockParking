@@ -116,6 +116,8 @@ const searchUnitButton = document.getElementById("search-unit-button");
 const unitInfo = document.getElementById("unit-info");
 const parkingInfo = document.getElementById("parking-info");
 const aptInfo = document.getElementById("apt-info");
+const carInfo = document.getElementById("car-info");
+const lpInfo = document.getElementById("lp-info");
 
 searchUnitButton.addEventListener("click", searchUnit);
 
@@ -124,6 +126,8 @@ function searchUnit() {
         unitInfo.innerText = `Please input a first and last name`
         parkingInfo.innerText = "";
         aptInfo.innerText = "";
+        carInfo.innerText = "";
+        lpInfo.innerText = "";
         return;
     }
 
@@ -136,9 +140,11 @@ function findInDB(fullNameRaw) {
     get(child(dbRef, userLocationInDB + "/residentData/" + fullNameRaw)).then((snapshot)=>{
         if (snapshot.exists()) {
             const userData = snapshot.val();
-            unitInfo.innerText = `Unit: ${userData.garage}`;
-            parkingInfo.innerText = `Parking: ${userData.parkingType}`;
+            unitInfo.innerText = `Garage: ${userData.garage}`;
+            parkingInfo.innerText = `Parking: ${userData.parkingType} ${userData.parkingSpace}`;
             aptInfo.innerText = `Apartment: ${userData.apartment}`;
+            carInfo.innerText = `Car: ${userData.year} ${userData.make} ${userData.model}`;
+            lpInfo.innerText = `License Plate: ${userData.lp}`
         }
         else {
             alert("Resident not in database")
@@ -639,6 +645,7 @@ for (let i = 0; i < numGuest; i++) {
         popupContainer.style.display = "none";
     }
 
+
     function reserveGuest(spaceNum) {
         console.log(`working ${spaceNum}`);
         const popupContainer = document.getElementById("popupContainer");
@@ -649,9 +656,46 @@ for (let i = 0; i < numGuest; i++) {
         const closePopupButton = document.getElementById("closePopup");
         closePopupButton.addEventListener("click", function() {
             const popupContainer = document.getElementById("popupContainer");
+            const firstNameG = document.getElementById("firstName");
+            const lastNameG = document.getElementById("lastName");
+            const apartmentG = document.getElementById("apt-input");
+            const yearG = document.getElementById("year");
+            const makeG = document.getElementById("make");
+            const modelG = document.getElementById("model");
+            const lpG = document.getElementById("lp#");
+            const lpStateG = document.getElementById("lpState");
+            const guestInputs = [firstNameG, lastNameG, apartmentG, yearG, makeG, modelG, lpG, lpStateG]
+            for (let i = 0; i < guestInputs.length(); i ++) {
+                if (guestInputs[i].value == "") {
+                    alert("All fields must be completed");
+                    return;
+                }
+            }
+            let guestObject = {
+                "firstNameG" : firstNameG.value,
+                "lastNameG" : lastNameG.value, 
+                "apartmenG" : apartmentG.value, 
+                "yearG" : yearG.value,
+                "makeG" : makeG.value,
+                "modelG" : modelG.value,
+                "lpG" : lpG.value,
+                "lpStateG" : lpStateG.value,
+            };
+            let firstLastG = (firstNameG.value + lastNameG.value).toLowerCase()
+            addGuestRTDB(guestObject, firstLastG);
+            console.log("closing");
             popupContainer.style.display = "none";
         });
 
+        function addGuestRTDB(guestObject, firstLastG) {
+            set(ref(database, userLocationInDB + "/guestData/" + firstLastG), guestObject)
+            .then(() => {
+                alert("Guest add succusfully!")
+            })
+            .catch((error) => {
+                alert("Error setting guest info: ", error);
+            });
+        }
         window.addEventListener("click", function(event) {
             const popupContainer = document.getElementById("popupContainer");
             if (event.target === popupContainer) {
