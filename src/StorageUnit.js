@@ -50,6 +50,25 @@ onAuthStateChanged(auth, (user)=> {
     }
 });
 
+
+
+// create correct number of garages
+const numOfGarages = 8;
+for (let i = 1; i <= numOfGarages; i ++) {
+    get(child(dbRef, userLocationInDB + "/garages/" + ("garage" + i))).then((snapshot)=>{
+        if (snapshot.exists() && !snapshot.val() == false) {
+            return;
+    } else {
+        try {
+            set(ref(database, userLocationInDB + "/garages/" + ("garage" + i)), false)
+        } catch (error) {
+            alert("Error: ", error)
+        }
+    }})   
+}
+    
+    
+
 const unitDict = {
 
     "bobjohnson" : { 
@@ -165,7 +184,7 @@ function searchName() {
 
 function findGarageInDB(garageNumRaw) {
     get(child(dbRef, userLocationInDB + "/garages/" + ("garage" + garageNumRaw))).then((snapshot)=>{
-        if (snapshot.exists()) {
+        if (snapshot.exists() && !snapshot.val() == false) {
             const userData = snapshot.val();
             nameInfo.innerText = `Name: ${userData.firstName} ${userData.lastName}`;
             aptInfoA.innerText = `Apartment: ${userData.apartment}`;
@@ -332,22 +351,23 @@ function addInfo() {
     }
 }
 
-
-function addGarage(newGarageRaw, firstLast) {
-
-    if (newGarageRaw < 1) {
-        return false;
-    } else if (newGarageRaw > 8) {
-        errors[9].innerText = "MetroWest only has garages 1-8"
-        return false;
-    } else if (nameDict[newGarageRaw -1] === false) {
-        nameDict[newGarageRaw -1] = unitDict[firstLast]
+async function addGarage(newGarageRaw) {
+    const dataRef = ref(database, userLocationInDB + "/garages/" + ("garage" + newGarageRaw));
+  
+    try {
+      const snapshot = await get(dataRef);
+      if (snapshot.exists() && snapshot.val() === false) {
         return true;
-    } else {
-        errors[9].innerText = "This garage is already taken"
+      } else {
+        alert("This garage is already taken");
+        console.log(snapshot.val());
         return false;
+      }
+    } catch (error) {
+      console.error("Error checking garage:", error);
+      return false; // Return false in case of an error
     }
-}
+  }
 
 // Confirm update
 const confirmUpdate = document.querySelector(".confirm-update");
@@ -368,7 +388,7 @@ function confirmAddInfo(newGarageRaw) {
     
     let firstLast = (firstName.value + lastName.value).toLowerCase()
 
-    if (addGarage(newGarageRaw, firstLast)) {
+    if (addGarage(newGarageRaw)) {
         let lpRaw = lp.value.replaceAll(/[^\w\s\d]/g, "").toUpperCase();
     
         let nameObject = {
@@ -402,7 +422,9 @@ function confirmAddInfo(newGarageRaw) {
         updateRTDBname(nameObject, firstLast);
         updateRTDBgarage(garageObject, garageNumber.value);
         updateRTDBlicensePlate(licensePlateObject, lpRaw);
-    };
+    } else {
+        console.log("not working")
+    }
 }
 
 // Add resident to residentInfo in RTDB
@@ -478,7 +500,7 @@ function removefromDB(residentRemovedRaw) {
                 if (!userData.garage == false) {
                     set(dataRefGarage, false)
                 } else {
-                    console.log("garage was false")
+                    console.log("garage was alredy empty")
                 }
                 // remove resident from licensePlate in RTDB
                 remove(dataRefLicense)
