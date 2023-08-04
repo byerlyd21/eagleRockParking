@@ -582,7 +582,6 @@ dropFile.addEventListener("drop", (e) => {
 
 //guest parking
 
-
 const numGuest = 25;
 const guestUl = document.getElementById("guest-ul");
 const guestParkingList = []
@@ -602,119 +601,118 @@ for (let i = 0; i < numGuest; i++) {
         });
     })(i + 1);
     
-    function verifyStatus(spaceNum) {
+function verifyStatus(spaceNum) {
 
-        if (guestParkingList[spaceNum][1] === false) {
-            console.log('false')
-            reserveGuest(spaceNum)
-        } else if (guestParkingList[spaceNum][1] === true) {
-            console.log('true')
-            viewGuest(spaceNum);
-        }}  
-   
-    };
+    if (guestParkingList[spaceNum][1] === false) {
+        console.log('false')
+        reserveGuest(spaceNum)
+    } else if (guestParkingList[spaceNum][1] === true) {
+        console.log('true')
+        viewGuest(spaceNum);
+    }}  
+
+};
     
-    function viewGuest(spaceNum) {
+function viewGuest(spaceNum) {
+    const popupContainer = document.getElementById("popupContainer");
+    const popupContent = document.getElementById("popupContent");
+    popupContent.textContent = `Guest card`;
+    popupContainer.style.display = "block";
+
+    const closePopupButton = document.getElementById("closePopup");
+    closePopupButton.addEventListener("click", function() {
         const popupContainer = document.getElementById("popupContainer");
-        const popupContent = document.getElementById("popupContent");
-        popupContent.textContent = `Guest card`;
-        popupContainer.style.display = "block";
-    
-        const closePopupButton = document.getElementById("closePopup");
-        closePopupButton.addEventListener("click", function() {
-            const popupContainer = document.getElementById("popupContainer");
-            popupContainer.style.display = "none";
-        });
-
-        window.addEventListener("click", function(event) {
-            const popupContainer = document.getElementById("popupContainer");
-            if (event.target === popupContainer) {
-                popupContainer.style.display = "none";
-            }
-        });
-        const removeGuestbtn = document.getElementById("reserve-button")
-        removeGuestbtn.innerText = "Remove Guest"
-        removeGuestbtn.addEventListener("click",  ()=> {
-            removeGuest(spaceNum, popupContainer)
-        })};
-
-    function removeGuest(spaceNum, popupContainer) {
-        guestParkingList[spaceNum - 1][0].innerText = `Avaliable`
-        guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
-        guestParkingList[spaceNum][1] = false
         popupContainer.style.display = "none";
-    }
+    });
 
-
-    function reserveGuest(spaceNum) {
-        console.log(`working ${spaceNum}`);
+    window.addEventListener("click", function(event) {
         const popupContainer = document.getElementById("popupContainer");
-        const popupContent = document.getElementById("popupContent");
-        popupContent.textContent = `Enter the Guest Car information for Guest space ${spaceNum} below`;
-        popupContainer.style.display = "block";
-    
-        const closePopupButton = document.getElementById("closePopup");
-        closePopupButton.addEventListener("click", function() {
-            const popupContainer = document.getElementById("popupContainer");
-            const firstNameG = document.getElementById("firstName");
-            const lastNameG = document.getElementById("lastName");
-            const apartmentG = document.getElementById("apt-input");
-            const yearG = document.getElementById("year");
-            const makeG = document.getElementById("make");
-            const modelG = document.getElementById("model");
-            const lpG = document.getElementById("lp#");
-            const lpStateG = document.getElementById("lpState");
-            const guestInputs = [firstNameG, lastNameG, apartmentG, yearG, makeG, modelG, lpG, lpStateG]
-            for (let i = 0; i < guestInputs.length(); i ++) {
-                if (guestInputs[i].value == "") {
-                    alert("All fields must be completed");
-                    return;
-                }
-            }
-            let guestObject = {
-                "firstNameG" : firstNameG.value,
-                "lastNameG" : lastNameG.value, 
-                "apartmenG" : apartmentG.value, 
-                "yearG" : yearG.value,
-                "makeG" : makeG.value,
-                "modelG" : modelG.value,
-                "lpG" : lpG.value,
-                "lpStateG" : lpStateG.value,
-            };
-            let firstLastG = (firstNameG.value + lastNameG.value).toLowerCase()
-            addGuestRTDB(guestObject, firstLastG);
-            console.log("closing");
+        if (event.target === popupContainer) {
             popupContainer.style.display = "none";
-        });
-
-        function addGuestRTDB(guestObject, firstLastG) {
-            set(ref(database, userLocationInDB + "/guestData/" + firstLastG), guestObject)
-            .then(() => {
-                alert("Guest add succusfully!")
-            })
-            .catch((error) => {
-                alert("Error setting guest info: ", error);
-            });
         }
-        window.addEventListener("click", function(event) {
-            const popupContainer = document.getElementById("popupContainer");
-            if (event.target === popupContainer) {
-                popupContainer.style.display = "none";
-            }
-        });
-        const reserveGuestbtn = document.getElementById("reserve-button")
-        reserveGuestbtn.innerText = "Reserve"
-        reserveGuestbtn.addEventListener("click", ()=> {
-            reserve(spaceNum, popupContainer)
-        })};
+    });
+    const removeGuestbtn = document.getElementById("reserve-button")
+    removeGuestbtn.innerText = "Remove Guest"
+    removeGuestbtn.addEventListener("click",  ()=> {
+        removeGuest(spaceNum, popupContainer)
+})};
 
-    function reserve(spaceNum, popupContainer) {
-        guestParkingList[spaceNum - 1][0].innerText = "Reserved"
-        guestParkingList[spaceNum - 1][0].style.background = "rgb(151,129,60)"
-        guestParkingList[spaceNum][1] = true
-        const guest = document.getElementById("first-name-g");
-        popupContainer.style.display = "none";
+function removeGuest(spaceNum, popupContainer) {
+    guestParkingList[spaceNum - 1][0].innerText = `Avaliable`
+    guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
+    guestParkingList[spaceNum][1] = false
+    popupContainer.style.display = "none";
     }
+
+
+function reserveGuest(spaceNum) {
+    console.log(`working ${spaceNum}`);
+    const popupContainer = document.getElementById("popupContainer");
+    const popupContent = document.getElementById("popupContent");
+    popupContent.textContent = `Enter the Guest Car information for Guest space ${spaceNum} below`;
+    popupContainer.style.display = "block";
+
+    window.addEventListener("click", function(event) {
+        const popupContainer = document.getElementById("popupContainer");
+        if (event.target === popupContainer) {
+            popupContainer.style.display = "none";
+        }
+    });
+    const reserveGuestbtn = document.getElementById("reserve-button")
+    reserveGuestbtn.innerText = "Reserve"
+    reserveGuestbtn.addEventListener("click", ()=> {
+        createGuestObject(spaceNum, popupContainer)
+    });
+}
+
+function createGuestObject(spaceNum, popupContainer) {
+    const firstNameG = document.getElementById("first-name-g");
+    const lastNameG = document.getElementById("last-name-g");
+    const apartmentG = document.getElementById("apt-visit");
+    const yearG = document.getElementById("year-g");
+    const makeG = document.getElementById("make-g");
+    const modelG = document.getElementById("model-g");
+    const lpG = document.getElementById("lp#-g");
+    const lpStateG = document.getElementById("lpState-g");
+    const guestInputs = [firstNameG, lastNameG, apartmentG, yearG, makeG, modelG, lpG, lpStateG]
+    for (let i = 0; i < guestInputs.length; i ++) {
+        if (guestInputs[i].value == "") {
+            alert(`All fields must be completed`);
+            return;
+        }
+    }
+    let guestObject = {
+        "firstNameG" : firstNameG.value,
+        "lastNameG" : lastNameG.value, 
+        "apartmenG" : apartmentG.value, 
+        "yearG" : yearG.value,
+        "makeG" : makeG.value,
+        "modelG" : modelG.value,
+        "lpG" : lpG.value,
+        "lpStateG" : lpStateG.value,
+    };
+    addGuestRTDB(guestObject, firstNameG.value, lastNameG.value, apartmentG.value);
+    reserve(spaceNum, popupContainer);
+}
+
+function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG) {
+    let firstLastG = (firstNameG + lastNameG).toLowerCase()
+    set(ref(database, userLocationInDB + "/guestData/" + firstLastG), guestObject)
+    .then(() => {
+        alert(`Guest ${firstNameG} ${lastNameG} visiting ${apartmentG} added successfully!`)
+    })
+    .catch((error) => {
+        alert("Error setting guest info: ", error);
+    });
+}
+
+function reserve(spaceNum, popupContainer) {
+    guestParkingList[spaceNum - 1][0].innerText = "Reserved"
+    guestParkingList[spaceNum - 1][0].style.background = "rgb(151,129,60)"
+    guestParkingList[spaceNum][1] = true
+    const guest = document.getElementById("first-name-g");
+    popupContainer.style.display = "none";
+}
 
 //accordian boxes
 
