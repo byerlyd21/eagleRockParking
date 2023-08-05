@@ -619,12 +619,6 @@ function viewGuest(spaceNum) {
     popupContent.textContent = `Guest card`;
     popupContainer.style.display = "block";
 
-    const closePopupButton = document.getElementById("closePopup");
-    closePopupButton.addEventListener("click", function() {
-        const popupContainer = document.getElementById("popupContainer");
-        popupContainer.style.display = "none";
-    });
-
     window.addEventListener("click", function(event) {
         const popupContainer = document.getElementById("popupContainer");
         if (event.target === popupContainer) {
