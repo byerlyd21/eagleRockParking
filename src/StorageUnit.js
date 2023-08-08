@@ -606,27 +606,36 @@ function addGuestCells() {
     }
 }
     
-function verifyStatus(spaceNum) {
+async function verifyStatus(spaceNum) {
+    const dataRef = ref(database, userLocationInDB + "/guestData/reservedSpaces");
 
-    get(child(dbRef, userLocationInDB + "/guestData/reservedSpaces" )).then((snapshot)=>{
+    try {
+        const snapshot = await get(dataRef);
         if (snapshot.exists()) {
             const userData = snapshot.val();
-            if (spaceNum in userData) {
+            if (userData[spaceNum]) {
                 viewGuest(spaceNum);
             } else {
                 reserveGuest(spaceNum, userData)
             }
-
         } else {
-            const reservedSpaces = []
-            set(child(database, userLocationInDB + "/guestData/reservedSpaces" ), reservedSpaces)
+            set(dataRef, createReservedSpacesObject())
             .then(() => {
                 verifyStatus(spaceNum)
             })
-        }
-    })
-};
-    
+        }  
+    } catch(error) {
+        alert(`Error: ${error}`)
+    }
+}
+        
+function createReservedSpacesObject() {
+    const reservedSpaces = {}
+    for (let i = 1; i <= numGuest; i ++) {
+        reservedSpaces[i] = false;
+    }
+    return reservedSpaces;
+}
 function viewGuest(spaceNum) {
     const popupContainer = document.getElementById("popupContainer");
     const popupContent = document.getElementById("popupContent");
@@ -700,11 +709,11 @@ function createGuestObject(spaceNum, popupContainer, userData) {
         "lpStateG" : lpStateG.value,
         "guestSpace" : spaceNum
     };
-    addGuestRTDB(guestObject, firstNameG.value, lastNameG.value, apartmentG.value, userData);
+    addGuestRTDB(guestObject, firstNameG.value, lastNameG.value, apartmentG.value, spaceNum);
     reserve(spaceNum, popupContainer);
 }
 
-function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG, userData) {
+function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG, spaceNum) {
     let firstLastG = (firstNameG + lastNameG).toLowerCase()
     set(ref(database, userLocationInDB + "/guestData/" + firstLastG), guestObject)
     .then(() => {
@@ -713,8 +722,7 @@ function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG, userData) 
     .catch((error) => {
         alert("Error setting guest info: ", error);
     });
-    guestListUpdate = userData.push(spaceNum)
-    set(ref(database, userLocationInDB + "/guestData/reservedSpaces"), guestListUpdate)
+    set(ref(database, userLocationInDB + "/guestData/reservedSpaces/" + spaceNum), true)
     .then(() => {
         console.log("space reserved")
     })
