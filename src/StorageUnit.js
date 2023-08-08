@@ -582,35 +582,49 @@ dropFile.addEventListener("drop", (e) => {
 
 //guest parking
 
+
 const numGuest = 25;
 const guestUl = document.getElementById("guest-ul");
 const guestParkingList = []
 
-for (let i = 0; i < numGuest; i++) {
+addGuestCells();
 
-    const guestSpace = document.createElement("li");
-    guestSpace.innerText = `Avaliable`;
-    guestSpace.style.background = "rgb(44,97,69)"
-    guestSpace.className = "list-item";
-    guestUl.appendChild(guestSpace);
-    guestParkingList.push([guestSpace, false]);
-    //use IIFE to apply event listener to reserve guest space button
-    (function (spaceNum) {
-        guestSpace.addEventListener("click", function() {
-        verifyStatus(spaceNum);
-        });
-    })(i + 1);
+function addGuestCells() {
+    for (let i = 0; i < numGuest; i++) {
+        const guestSpace = document.createElement("li");
+        guestSpace.innerText = `Avaliable`;
+        guestSpace.style.background = "rgb(44,97,69)"
+        guestSpace.className = "list-item";
+        guestUl.appendChild(guestSpace);
+        guestParkingList.push([guestSpace, false]);
+        //use IIFE to apply event listener to reserve guest space button
+        (function (spaceNum) {
+            guestSpace.addEventListener("click", function() {
+            verifyStatus(spaceNum);
+            });
+        })(i + 1);
+    }
+}
     
 function verifyStatus(spaceNum) {
 
-    if (guestParkingList[spaceNum][1] === false) {
-        console.log('false')
-        reserveGuest(spaceNum)
-    } else if (guestParkingList[spaceNum][1] === true) {
-        console.log('true')
-        viewGuest(spaceNum);
-    }}  
+    get(child(dbRef, userLocationInDB + "/guestData/reservedSpaces" )).then((snapshot)=>{
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            if (spaceNum in userData) {
+                viewGuest(spaceNum);
+            } else {
+                reserveGuest(spaceNum, userData)
+            }
 
+        } else {
+            const reservedSpaces = []
+            set(child(database, userLocationInDB + "/guestData/reservedSpaces" ), reservedSpaces)
+            .then(() => {
+                verifyStatus(spaceNum)
+            })
+        }
+    })
 };
     
 function viewGuest(spaceNum) {
@@ -639,7 +653,7 @@ function removeGuest(spaceNum, popupContainer) {
     }
 
 
-function reserveGuest(spaceNum) {
+function reserveGuest(spaceNum, userData) {
     console.log(`working ${spaceNum}`);
     const popupContainer = document.getElementById("popupContainer");
     const popupContent = document.getElementById("popupContent");
@@ -655,11 +669,11 @@ function reserveGuest(spaceNum) {
     const reserveGuestbtn = document.getElementById("reserve-button")
     reserveGuestbtn.innerText = "Reserve"
     reserveGuestbtn.addEventListener("click", ()=> {
-        createGuestObject(spaceNum, popupContainer)
+        createGuestObject(spaceNum, popupContainer, userData)
     });
 }
 
-function createGuestObject(spaceNum, popupContainer) {
+function createGuestObject(spaceNum, popupContainer, userData) {
     const firstNameG = document.getElementById("first-name-g");
     const lastNameG = document.getElementById("last-name-g");
     const apartmentG = document.getElementById("apt-visit");
@@ -684,12 +698,13 @@ function createGuestObject(spaceNum, popupContainer) {
         "modelG" : modelG.value,
         "lpG" : lpG.value,
         "lpStateG" : lpStateG.value,
+        "guestSpace" : spaceNum
     };
-    addGuestRTDB(guestObject, firstNameG.value, lastNameG.value, apartmentG.value);
+    addGuestRTDB(guestObject, firstNameG.value, lastNameG.value, apartmentG.value, userData);
     reserve(spaceNum, popupContainer);
 }
 
-function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG) {
+function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG, userData) {
     let firstLastG = (firstNameG + lastNameG).toLowerCase()
     set(ref(database, userLocationInDB + "/guestData/" + firstLastG), guestObject)
     .then(() => {
@@ -698,6 +713,14 @@ function addGuestRTDB(guestObject, firstNameG, lastNameG, apartmentG) {
     .catch((error) => {
         alert("Error setting guest info: ", error);
     });
+    guestListUpdate = userData.push(spaceNum)
+    set(ref(database, userLocationInDB + "/guestData/reservedSpaces"), guestListUpdate)
+    .then(() => {
+        console.log("space reserved")
+    })
+    .catch((error) => {
+        alert("Error setting guest info: ", error);
+    })
 }
 
 function reserve(spaceNum, popupContainer) {
@@ -719,5 +742,5 @@ const accordianArray = Array.from(accordian); // Convert HTMLCollection to an ar
 for (let i = 0; i < accordianArray.length; i++) {
     labelArray[i].addEventListener("click", function(event) {
         accordianArray[i].classList.toggle('active');
-});
-}
+})};
+
