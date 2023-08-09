@@ -593,7 +593,7 @@ verifyCellsExist()
 // if they don't exist => create them and then verify again
 async function verifyCellsExist() {
     const dataRef = ref(database, userLocationInDB + "/guestData/reservedSpaces");
-    try {
+    //try {
         const snapshot = await get(dataRef);
         if (snapshot.exists()) {
             const userData = snapshot.val();
@@ -604,9 +604,9 @@ async function verifyCellsExist() {
                 verifyCellsExist()
             })
         }  
-    } catch(error) {
-        alert(`Error: ${error}`)
-    }
+    //} catch(error) {
+     //   alert(`Error: ${error}`)
+    //}
 }
 
 // create reserved spaces object for number of guest spaces on property
@@ -629,20 +629,23 @@ function addGuestCells(userData) {
             guestSpace.style.background = "rgb(151,129,60)"
             guestSpace.className = "list-item";
             guestUl.appendChild(guestSpace);
+            (function (spaceNum) {
+                guestSpace.addEventListener("click", function() {
+                viewGuest(spaceNum, userData);
+                });
+            })(i + 1);
         } else {
             const guestSpace = document.createElement("li");
             guestSpace.innerText = `Avaliable`;
             guestSpace.style.background = "rgb(44,97,69)"
             guestSpace.className = "list-item";
             guestUl.appendChild(guestSpace);
-            console.log(userData[i])
+            (function (spaceNum) {
+                guestSpace.addEventListener("click", function() {
+                reserveGuest(spaceNum, userData)
+                });
+            })(i + 1);
         }
-        //use IIFE to apply event listener to reserve guest space button
-        (function (spaceNum) {
-            guestSpace.addEventListener("click", function() {
-            verifyStatus(spaceNum);
-            });
-        })(i + 1);
     }
 }
     
