@@ -587,16 +587,56 @@ const numGuest = 25;
 const guestUl = document.getElementById("guest-ul");
 const guestParkingList = []
 
-addGuestCells();
+verifyCellsExist()
 
-function addGuestCells() {
+// if cells exist => call addGuestCells
+// if they don't exist => create them and then verify again
+async function verifyCellsExist() {
+    const dataRef = ref(database, userLocationInDB + "/guestData/reservedSpaces");
+    try {
+        const snapshot = await get(dataRef);
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            addGuestCells(userData)
+        } else {
+            set(dataRef, createReservedSpacesObject())
+            .then(() => {
+                verifyCellsExist()
+            })
+        }  
+    } catch(error) {
+        alert(`Error: ${error}`)
+    }
+}
+
+// create reserved spaces object for number of guest spaces on property
+function createReservedSpacesObject() {
+    const reservedSpaces = {}
+    for (let i = 1; i <= numGuest; i ++) {
+        reservedSpaces[i] = false;
+    }
+    return reservedSpaces;
+}
+
+// if cell is true in reservedSpaces object, create reserved cell
+// if cell is false in reservedSpaces object, create avaliable cell
+// add 'click' event listener that calls verify status when clicked
+function addGuestCells(userData) {
     for (let i = 0; i < numGuest; i++) {
-        const guestSpace = document.createElement("li");
-        guestSpace.innerText = `Avaliable`;
-        guestSpace.style.background = "rgb(44,97,69)"
-        guestSpace.className = "list-item";
-        guestUl.appendChild(guestSpace);
-        guestParkingList.push([guestSpace, false]);
+        if (userData[i]) {
+            const guestSpace = document.createElement("li");
+            guestSpace.innerText = "Reserved"
+            guestSpace.style.background = "rgb(151,129,60)"
+            guestSpace.className = "list-item";
+            guestUl.appendChild(guestSpace);
+        } else {
+            const guestSpace = document.createElement("li");
+            guestSpace.innerText = `Avaliable`;
+            guestSpace.style.background = "rgb(44,97,69)"
+            guestSpace.className = "list-item";
+            guestUl.appendChild(guestSpace);
+            console.log(userData[i])
+        }
         //use IIFE to apply event listener to reserve guest space button
         (function (spaceNum) {
             guestSpace.addEventListener("click", function() {
@@ -606,15 +646,49 @@ function addGuestCells() {
     }
 }
     
+
+// async function makeGuestCell(spaceNum, dataRef) {
+//     try {
+//         const snapshot = await get(dataRef);
+//         if (snapshot.exists()) {
+//             const userData = snapshot.val();
+//             if (userData[spaceNum]) {
+//                 const guestSpace = document.createElement("li");
+//                 guestSpace.innerText = "Reserved"
+//                 guestSpace.style.background = "rgb(151,129,60)"
+//                 guestSpace.className = "list-item";
+//                 guestUl.appendChild(guestSpace);
+//             } else {
+//                 const guestSpace = document.createElement("li");
+//                 guestSpace.innerText = `Avaliable`;
+//                 guestSpace.style.background = "rgb(44,97,69)"
+//                 guestSpace.className = "list-item";
+//                 guestUl.appendChild(guestSpace);
+//                 console.log(userData[i])
+//             }
+//         } else {
+//             set(dataRef, createReservedSpacesObject())
+//             .then(() => {
+//                 makeGuestCell(spaceNum)
+//             })
+//         }  
+//     } catch(error) {
+//         alert(`Error: ${error}`)
+//     }
+// }
+
+
+// check if space true or false in reservedSpaces
+// call viewGuest if space is true
+// call reserveGuest if space is false
 async function verifyStatus(spaceNum) {
     const dataRef = ref(database, userLocationInDB + "/guestData/reservedSpaces");
-
     try {
         const snapshot = await get(dataRef);
         if (snapshot.exists()) {
             const userData = snapshot.val();
             if (userData[spaceNum]) {
-                viewGuest(spaceNum);
+                viewGuest(spaceNum, userData);
             } else {
                 reserveGuest(spaceNum, userData)
             }
@@ -629,14 +703,8 @@ async function verifyStatus(spaceNum) {
     }
 }
         
-function createReservedSpacesObject() {
-    const reservedSpaces = {}
-    for (let i = 1; i <= numGuest; i ++) {
-        reservedSpaces[i] = false;
-    }
-    return reservedSpaces;
-}
-function viewGuest(spaceNum) {
+
+function viewGuest(spaceNum, userData) {
     const popupContainer = document.getElementById("popupContainer");
     const popupContent = document.getElementById("popupContent");
     popupContent.textContent = `Guest card`;
@@ -651,14 +719,18 @@ function viewGuest(spaceNum) {
     const removeGuestbtn = document.getElementById("reserve-button")
     removeGuestbtn.innerText = "Remove Guest"
     removeGuestbtn.addEventListener("click",  ()=> {
-        removeGuest(spaceNum, popupContainer)
+        removeGuest(spaceNum, popupContainer, userData)
 })};
 
-function removeGuest(spaceNum, popupContainer) {
+function removeGuest(spaceNum, popupContainer, userData) {
     guestParkingList[spaceNum - 1][0].innerText = `Avaliable`
     guestParkingList[spaceNum - 1][0].style.background = "rgb(44,97,69)"
     guestParkingList[spaceNum][1] = false
     popupContainer.style.display = "none";
+    remove(userData[spaceNum])
+    .then(() => {
+        alert("Guest removed sucessfully")
+    })
     }
 
 
