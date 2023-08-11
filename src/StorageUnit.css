@@ -174,7 +174,7 @@
  }
 
  #drop-file {
-    height: 300px;
+    height: 150px;
     width: 300px;
     background-color: white;
     border-color: rgb(151,129,60);
@@ -182,7 +182,6 @@
     margin: 16px;
     box-shadow: 2px 2px 5px black;
     text-align: center;
-
  }
 
  #drop-file:hover {
@@ -193,6 +192,7 @@
  .csv-form {
     display: flex;
     justify-content: center;
+    
  }
  
 
