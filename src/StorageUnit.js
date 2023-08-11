@@ -69,33 +69,33 @@ for (let i = 1; i <= numOfGarages; i ++) {
     
     
 
-const unitDict = {
+// const unitDict = {
 
-    "bobjohnson" : { 
-        "firstName" : "Bob",
-        "lastName" : "Johnson", 
-        "apartment" : "55-555", 
-        "year" : "2007",
-        "make" : "Honda",
-        "model" : "Accord",
-        "lp" : "78H92",
-        "lpState" : "MA",
-        "parkingType" : "regular",
-        "garage" : "8",
-        "parkingSpace" : "regular"}
-};
+//     "bobjohnson" : { 
+//         "firstName" : "Bob",
+//         "lastName" : "Johnson", 
+//         "apartment" : "55-555", 
+//         "year" : "2007",
+//         "make" : "Honda",
+//         "model" : "Accord",
+//         "lp" : "78H92",
+//         "lpState" : "MA",
+//         "parkingType" : "regular",
+//         "garage" : "8",
+//         "parkingSpace" : "regular"}
+// };
 
-const nameDict = [
+// const nameDict = [
 
-    false,
-    "Garage 2 is unassigned",
-    "Garage 3 is unassigned",
-    "Garage 4 is unassigned",
-    "Garage 5 is unassigned",
-    "Garage 6 is unassigned",
-    "Garage 7 is unassigned",
-     unitDict["bobjohnson"]
-]
+//     false,
+//     "Garage 2 is unassigned",
+//     "Garage 3 is unassigned",
+//     "Garage 4 is unassigned",
+//     "Garage 5 is unassigned",
+//     "Garage 6 is unassigned",
+//     "Garage 7 is unassigned",
+//      unitDict["bobjohnson"]
+// ]
 
 const codeDict = {
 
@@ -556,7 +556,6 @@ processCSVbtn.addEventListener("click", () => {
 });
 
 function processCSV() {
-    console.log("processing")
     const fileInput = document.getElementById("drop-file")
     const outputDiv = document.getElementById('output');
     const file = fileInput.files[0];
@@ -576,11 +575,20 @@ function processCSV() {
                     const obj = {};
                     const firstLast = values[0].toLowerCase() + values[1].toLowerCase();
                     const sanitizedKey = firstLast.replace(/[^a-z0-9]/g, '');
+                    const lpRaw = values[6].replace(/[^\w\s\d]/g, "").toUpperCase();
                     for (let j = 2; j < headers.length; j++) {
                         obj[headers[j]] = values[j] !== '' ? values[j] : 'Not Applicable';
                     }
+                    let licensePlateObject = {
+                        "firstName" : values[0],
+                        "lastName" : values[1], 
+                        "apartment" : values[2],
+                        "parkingType" : values[8],
+                        "parkingSpace" : values[9]
+                    };
                     console.log(headers)
                     updateRTDBname(obj, sanitizedKey);
+                    updateRTDBlicensePlate(licensePlateObject, lpRaw);
                 }
             }
         };
