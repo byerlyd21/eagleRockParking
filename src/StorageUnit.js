@@ -566,22 +566,23 @@ function processCSV() {
         reader.onload = function(e) {
             const csvData = e.target.result;
             const lines = csvData.split('\n');
-            const objects = [];
+            const objects = {};
 
             const headers = lines[0].split(',');
-
+            headers[headers.length - 1] = headers[headers.length - 1].trim();
             for (let i = 1; i < lines.length; i++) {
                 const values = lines[i].split(',');
                 if (values.length === headers.length) {
                     const obj = {};
-                    for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = values[j];
+                    const firstLast = values[0].toLowerCase() + values[1].toLowerCase();
+                    const sanitizedKey = firstLast.replace(/[^a-z0-9]/g, '');
+                    for (let j = 2; j < headers.length; j++) {
+                        obj[headers[j]] = values[j] !== '' ? values[j] : 'Not Applicable';
                     }
-                    objects.push(obj);
+                    console.log(headers)
+                    updateRTDBname(obj, sanitizedKey);
                 }
             }
-            console.log(JSON.stringify(objects[0]))
-            outputDiv.innerHTML = JSON.stringify(objects, null, 2);
         };
         reader.readAsText(file);
     } else {
