@@ -1,0 +1,218 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="StorageUnit.css"/>
+    </head>
+    <body class="body">
+        <div class="text-body">
+            
+                <h1 class="main-header" id="user-message">Storage Units at Eagle Rock Properties</h1>
+                <div id="sub-info">
+                    <h4 class="sub-header">Search by Unit:</h4>
+                        <p>Use the "Search by Unit" section to find out which resident rents a specific unit. Simply enter the unit number, and the application will provide you with the corresponding resident's name.</p>
+                    <h4 class="sub-header">Search by Name:</h4>
+                        <p>Utilize the "Search by Name" section to discover which unit a specific resident rents. Enter the tenant's name, and the application will display the corresponding unit they occupy.</p>
+                    <h4 class="sub-header">Available Storage Units:</h4>
+                        <p>In the "Available Storage Units" section, you can check which storage units are currently available for rent. This section provides you with an up-to-date list of available units. </p>
+                </div>
+        </div>
+        
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label"> Resident Info Search</div>
+                    <div class="content">
+                        <div class="input">
+                            <input class="enter-short" id="name" type="text" placeholder="Full Name">
+                            <div class="right-button">
+                                <button class="btn" id="search-unit-button">Search</button>
+                            </div>
+                            <div id="unit-info"></div>
+                            <div id="parking-info"> </div>
+                            <div id="apt-info"> </div>
+                            <div id="car-info"></div>
+                            <div id="lp-info"></div>
+
+                        </div>
+                        <div class="input">
+                            <input class="enter-short" id="unit" type="text" placeholder="Garage Number">
+                            <div class="right-button">
+                                <button class="btn" id="search-name-button">Search</button>
+                            </div>
+                            <div id="name-info"></div>
+                            <div id="parking-infoA"> </div>
+                            <div id="apt-infoA"> </div>
+                        </div>
+                        <div class="input">
+                            <input class="enter-short" id="licensePlate" type="text" placeholder="License Plate">
+                            <div class="right-button">
+                                <button class="btn" id="search-lp-button">Search</button>
+                            </div>
+                            <div id="name-info-lp"></div>
+                            <div id="parking-info-lp"> </div>
+                            <div id="apt-info-lp"> </div>
+                            <div id="lp-parking-type"> </div>
+                            <div id="lp-space-num"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Parking Code Search</div>
+                    <div class="content">
+                        <div class="input">
+                            <input class="enter-short" id="apt" type="text" placeholder="Parking Code">
+                                <div class="right-button">
+                                    <button class="btn" id="search-apt-button">Search</button>
+                                </div>
+                            <div id="parking-code"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Add Resident</div>
+                    <div class="content">
+                        <div class="input">
+                            <div id="update-info">
+                                <div>
+                                    <div><input class="enter" id="firstName" type="text" placeholder="First Name"></div>
+                                    <div class="error" id="firstName-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="lastName" type="text" placeholder="Last Name"></div>
+                                    <div class="error" id="lastName-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="apt-input" type="text" placeholder="Apartment"></div>
+                                    <div class="error" id="apt-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="year" type="text" placeholder="Car Year"></div>
+                                    <div class="error" id="year-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="make" type="text" placeholder="Car Make"></div>
+                                    <div class="error" id="make-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="model" type="text" placeholder="Car Model"></div>
+                                    <div class="error" id="model-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="lp#" type="text" placeholder="License Plate Number"></div>
+                                    <div class="error" id="lp#-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="lpState" type="text" placeholder="License Plate State"></div>
+                                    <div class="error" id="lpState-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="parking-type" type="text" placeholder="Parking Type"></div>
+                                    <div class="error" id="parking-type-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="parking-space" type="text" placeholder="Parking Space Number"></div>
+                                    <div class="error" id="parking-space-error"></div>
+                                </div>
+                                <div>
+                                    <div><input class="enter" id="garage-num" type="text" placeholder="Garage Number"></div>
+                                    <div class="error" id="garage-num-error"></div>
+                                </div>
+                                <div class="center-button"><button class="btn" id="update-button">Add Resident</button></div>
+                                <div id="error"></div>
+                        </div>
+                        <div>
+                            <div>
+                            <textarea class="confirm-update"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Remove Resident</div>
+                    <div class="content">
+                        <div class="input">
+                            <div id="resident-search">
+                                <input class="enter-short" id="resident-remove-name" type="text" placeholder="Full Name">
+                                <div class="right-button">   
+                                    <button class="btn" id="remove-resident-button">Remove</button>
+                                </div>
+                                <div id="removed-resident-confirmation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Update Existing Information</div>
+                    <div class="content">
+                        <div class="input">
+                            <div id="resident-search">
+                                <input class="enter-short" id="resident-search-name" type="text" placeholder="Full Name">
+                                <div class="right-button">   
+                                    <button class="btn" id="update-resident-button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Avaliable Spaces/Garages</div>
+                    <div class="content">
+                        <ul class="inner-content">
+                            <li class="list-item">Premier 16</li>
+                            <li class="list-item">Premier 17</li>
+                            <li class="list-item">Premier 18</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Update Database</div>
+                    <div class="content">
+                        <form class="csv-form">
+                            <input type="file" id="drop-file"/>
+                        </form>
+                        <div class="center-button">
+                            <button class="btn" id="submit-btn"> Process </button>
+                        </div>
+                        <div id="output"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordian">  
+                <div class="contentBx">
+                    <div class="label">Guest Parking</div>
+                    <div class="content">
+                        <ul class="inner-content" id="guest-ul"></ul>
+                        <div id="popupContainer" class="popup">
+                            <div class="popup-content">
+                                <span class="close-button" id="closePopup">&times;</span>
+                                <p id="popupContent"></p>
+                                <input class="enter" id="first-name-g" type="text" placeholder="Guests First Name">
+                                <input class="enter" id="last-name-g" type="text" placeholder="Guests Last Name">
+                                <input class="enter" id="apt-visit" type="text" placeholder="Apartment Visiting">
+                                <input class="enter" id="year-g" type="text" placeholder="Car Year">
+                                <input class="enter" id="make-g" type="text" placeholder="Car Make">
+                                <input class="enter" id="model-g" type="text" placeholder="Car Model">
+                                <input class="enter" id="lp#-g" type="text" placeholder="License Plate Number">
+                                <input class="enter" id="lpState-g" type="text" placeholder="License Plate State">
+                                <div class="error" id="guest-error"></div>
+                                <div class="center-button"><button class="btn" id="reserve-button">Reserve</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script type="module" src="StorageUnit.js" defer></script>
+    </body>
+</html>
