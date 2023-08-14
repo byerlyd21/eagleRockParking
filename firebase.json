@@ -3,17 +3,27 @@
     "rules": "/Users/dallinbyerly/Documents/EagleRockProject "
   },
   "hosting": {
-    "public": "public",
+    "public": "src",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/src/login-testlogin.html"
-      }
-    ]
+    "rewrites": [ {
+      "source": "/",
+      "destination": "/login-test/login.html"
+    }]
+  },
+  "emulators": {
+    "database": {
+      "port": 5033
+    },
+    "hosting": {
+      "port": 5034
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }
