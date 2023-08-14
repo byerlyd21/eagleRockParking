@@ -1,0 +1,9 @@
+# User Manual
+
+# Login and Registration
+
+The registration will be closed after 8/15/2023 to avoid to many users joining, but if you would like to use the application, please email me at dallinbyerly@gmail.com. If you ask, I can open up registration, or help you get set up. When logging in, you just need to input your username, email, and password. You may recieve a message that your password or "auth" is incorrect. If this occurs make sure the password is spelled correcty, and also make sure the eail is correct. If both of these are correct and it is still not logging in, you may need to switch browsers. Using chrome will be your best bet. We currently do not have a password reset function, so if you forget your password, email me and we can resolve the issue. 
+
+# Resident Info Search
+
+In the resident info search section you can search resident info by full name, license plate, or garage number. Click on the "resident info search" dropdown menue and search by coresponding value. You will need to spell the name correctly, input the licnse plate correctly, and input a valid garage number; otherwise, you will recieve an error. If you are sure you spelled everything correctly and you still recieve an error the resident, or license plate is not in the database. 
