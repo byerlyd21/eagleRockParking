@@ -336,7 +336,6 @@ function addInfo() {
     if (parkingType.value === "") {
         parkingType.value = "Not Applicable"
     }
-    
     if (parkingSpaceNum.value === "" && parkingType.value.toLowerCase() === "premier") {
         parkingSpaceNumError.innerText = "Premier parking needs a space number"
     } else if (parkingSpaceNum.value === "") {
@@ -346,20 +345,22 @@ function addInfo() {
     } else {
         parkingSpaceNumError.innerText = ""
     }
-    
     if (garageNumber.value === "") {
         garageNumber.value = "Not Applicable"
         confirmAddInfo(0)
     } else {
         let newGarageRaw = Number(garageNumber.value.replaceAll(/[\s-]/g, ""));
-        console.log(newGarageRaw, garageNumber.value)
         confirmAddInfo(newGarageRaw)
     }
 }
 
 async function addGarage(newGarageRaw) {
+    
+    if (newGarageRaw == 0) {
+        return true;
+    }
+    
     const dataRef = ref(database, userLocationInDB + "/garages/" + ("garage" + newGarageRaw));
-  
     try {
       const snapshot = await get(dataRef);
       if (snapshot.exists() && snapshot.val() === false) {
@@ -367,7 +368,7 @@ async function addGarage(newGarageRaw) {
       } else {
         alert("This garage is already taken");
         console.log(snapshot.val());
-        return false;
+        return false; // Return false so resident is not added if garage is taken
       }
     } catch (error) {
       console.error("Error checking garage:", error);
@@ -381,16 +382,16 @@ const confirmUpdate = document.querySelector(".confirm-update");
 
 function confirmAddInfo(newGarageRaw) {
 
-    confirmUpdate.value = 
-    `Does this information look right?\r\n
-    First Name: ${firstName.value}\r\n
-    Last Name: ${lastName.value}\r\n
-    Apartment: ${apartment.value}\r\n
-    Year: ${year.value}\r\n
-    Make: ${make.value}\r\n
-    Model: ${model.value}\r\n
-    License Plate: ${lp.value}\r\n
-    License Plate State: ${lpState.value}`;
+    // confirmUpdate.value = 
+    // `Does this information look right?\r\n
+    // First Name: ${firstName.value}\r\n
+    // Last Name: ${lastName.value}\r\n
+    // Apartment: ${apartment.value}\r\n
+    // Year: ${year.value}\r\n
+    // Make: ${make.value}\r\n
+    // Model: ${model.value}\r\n
+    // License Plate: ${lp.value}\r\n
+    // License Plate State: ${lpState.value}`;
     
     let firstLast = (firstName.value + lastName.value).toLowerCase()
 
@@ -425,8 +426,18 @@ function confirmAddInfo(newGarageRaw) {
             "parkingSpace" : parkingSpaceNum.value
         };
 
+        // clear fields aftwer submitting
+        for (let i = 0; i < 8; i ++) {
+            fields[i].value = ""
+        }
+        parkingType.value = "";
+        parkingSpaceNum.value = "";
+        garageNumber.value = "";
+
         updateRTDBname(nameObject, firstLast);
-        updateRTDBgarage(garageObject, garageNumber.value);
+        if (!newGarageRaw == 0) {
+            updateRTDBgarage(garageObject, garageNumber.value);
+        }   
         updateRTDBlicensePlate(licensePlateObject, lpRaw);
     } else {
         console.log("not working")
@@ -434,7 +445,6 @@ function confirmAddInfo(newGarageRaw) {
 }
 
 // Add resident to residentInfo in RTDB
-
 function updateRTDBname(nameObject, firstLast) {
     set(ref(database, userLocationInDB + "/residentData/" + firstLast), nameObject)
     .then(() => {
@@ -444,8 +454,8 @@ function updateRTDBname(nameObject, firstLast) {
         alert("Error setting resident info: ", error);
     });
 }
-// Add resident info to garages in RTDB
 
+// Add resident info to garages in RTDB
 function updateRTDBgarage(garageObject, garageNumber) {
     set(ref(database, userLocationInDB + "/garages/" + ("garage" + garageNumber)), garageObject)
     .then(() => {
@@ -455,8 +465,8 @@ function updateRTDBgarage(garageObject, garageNumber) {
         alert("Error setting garage data: ", error);
     });
 }
-// Add resident info to licensePlates in RTDB
 
+// Add resident info to licensePlates in RTDB
 function updateRTDBlicensePlate(licensePlateObject, lp) {
     set(ref(database, userLocationInDB + "/licensePlates/" + lp), licensePlateObject)
     .then(() => {
@@ -466,6 +476,7 @@ function updateRTDBlicensePlate(licensePlateObject, lp) {
         alert("Error setting license plate data: ", error);
     });
 }
+
 // Remove Resident
 const removeBtn = document.getElementById("remove-resident-button")
 removeBtn.addEventListener("click", removeResident);
@@ -477,18 +488,13 @@ function removeResident() {
     if (residentRemoved.value === "") {
         removedResConf.innerText = "Please input resident you would like to remove"
         return;
+    } else {
+        //change to unitDict key format (lower-case with no spaces)
+        let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
+        removefromDB(residentRemovedRaw, residentRemoved.value);
+        // clear field after submiting
+        residentRemoved.value = ""
     }
-    
-    //change to unitDict key format (lower-case with no spaces)
-    let residentRemovedRaw = residentRemoved.value.toLowerCase().replaceAll(/\s/g, "");
-    removefromDB(residentRemovedRaw);
-    // if (residentRemovedRaw in unitDict) {
-    //     removedResConf.innerText = `${unitDict[residentRemovedRaw]["firstName"]} ${unitDict[residentRemovedRaw]["lastName"]} was removed from the database`
-    //     delete unitDict[residentRemovedRaw]
-
-    // } else {
-    //     removedResConf.innerText = "Resident not found"
-    // }
 };
 
 function removefromDB(residentRemovedRaw) {
